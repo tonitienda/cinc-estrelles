@@ -2,6 +2,8 @@
 
 Playground to work on microservices with different technologies I want to try out, learn or keep using.
 
+The context will be an application for a ficticiout hotel. `The Great Ruteho 5*`
+
 ## Intro
 
 I would not recoment a 1-team (or 1-person) project to deal with lots of different technologies or
@@ -42,5 +44,7 @@ I will keep an ADR with the decisions made on each stage of the development.
 ### Typescript
 
 ### Node js
+
+### Graphql
 
 ### Kubernetes
