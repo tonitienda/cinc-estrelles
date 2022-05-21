@@ -32,6 +32,10 @@ I will keep an ADR with the decisions made on each stage of the development.
 
 ### Argo CD
 
+### EasyPeasy
+State management for react:
+https://easy-peasy.vercel.app/
+
 ## Technologies might be interesting to learn
 
 ### Angular
