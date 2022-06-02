@@ -5,5 +5,12 @@ services:
       context: frontend
     ports:
       - 3000:3000
-    volumes:
-      - ./frontend/src:/app/src:rw
+    # volumes:
+    #   - ./frontend/src:/usr/app/src:rw
+  backend:
+    build:
+      context: backend
+    ports:
+      - 8080:8080
+    # volumes:
+    #   - ./backend/src:/usr/app/src:rw
