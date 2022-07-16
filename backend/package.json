@@ -1,0 +1,23 @@
+{
+  "name": "hoteru-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/tonitienda/ruteho",
+  "license": "MIT",
+  "author": {
+    "name": "Toni Tienda",
+    "email": "tonitienda@gmail.com",
+    "url": "https://github.com/tonitienda"
+  },
+  "dependencies": {
+    "express": "4.18.1"
+  },
+  "devDependencies": {
+    "@types/express": "4.17.13",
+    "typescript": "4.7.4"
+  },
+  "scripts": {
+    "build": "tsc",
+    "run": "node build/index.js"
+  }
+}

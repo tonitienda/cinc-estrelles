@@ -1,12 +1,12 @@
 version: '2.4'
 services:
-  frontend:
-    build:
-      context: frontend
-    ports:
-      - 3000:3000
-    # volumes:
-    #   - ./frontend/src:/usr/app/src:rw
+  # frontend:
+  #   build:
+  #     context: frontend
+  #   ports:
+  #     - 3000:3000
+  #   # volumes:
+  #   #   - ./frontend/src:/usr/app/src:rw
   backend:
     build:
       context: backend
