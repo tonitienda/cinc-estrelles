@@ -1,0 +1,11 @@
+name: Basic check for Ruteho
+on: [push]
+jobs:
+  Check-Backend:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - uses: actions/checkout@v3
+      - run: 
+          - cd backend
+          - docker build
