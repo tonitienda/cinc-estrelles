@@ -32,5 +32,6 @@ WORKDIR /app
 COPY --from=build /app/features features
 COPY --from=dependencies /app/node_modules node_modules
 COPY --from=build /app/package.json .
+COPY cucumber.js .
 
 CMD yarn cucumber-js
