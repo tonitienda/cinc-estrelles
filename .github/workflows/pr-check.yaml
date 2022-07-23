@@ -1,10 +1,11 @@
 name: Basic check for Ruteho
-on: [push]
+on:
+  - pull_request
 jobs:
   Check-Backend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Build backend
-        run: docker build backend/
+      - name: System Tests
+        run: docker compose -f docker-compose-system-test.yaml up --exit-code-from system-test

@@ -1,0 +1,12 @@
+version: '2.4'
+services:
+  backend:
+    build:
+      context: backend
+
+  system-test:
+    depends_on:
+      - backend
+    build:
+      context: system-test
+  
