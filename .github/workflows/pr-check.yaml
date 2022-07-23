@@ -1,8 +1,9 @@
-name: Basic check for Ruteho
+name: pr-check
 on:
   - pull_request
 jobs:
-  Check-Backend:
+  BackendSystemTests:
+    name: backend-system-tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
