@@ -1,6 +1,8 @@
 import express, { Request, Response } from "express";
 import * as Dummy from "./domain/dummy";
 import bodyParser from "body-parser";
+import { handleCommandRequest } from "./handlers/command";
+import { handleQueryRequest } from "./handlers/query";
 
 const PORT = 3000;
 
@@ -12,16 +14,8 @@ app.get("/healthz", (_: Request, res: Response) => {
   res.send("✅");
 });
 
-// TODO - Implement basic version of validation
-app.post("/dummy", (req: Request, res: Response) => {
-  try {
-    Dummy.execute(req.body);
-
-    res.send();
-  } catch (err: any) {
-    res.status(400).end();
-  }
-});
+app.post("/dummy", handleCommandRequest(Dummy.executeCommand));
+app.get("/dummy", handleQueryRequest(Dummy.executeQuery));
 
 app.listen(PORT, () => {
   console.log(`🚀 Listening to ${PORT}`);
