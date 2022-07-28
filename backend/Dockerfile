@@ -1,3 +1,19 @@
+FROM node:18-slim as test
+
+WORKDIR /app
+
+COPY package.json yarn.lock jest.config.js ./
+
+RUN yarn
+
+COPY tsconfig.json .
+COPY src src
+
+RUN  yarn jest
+
+# ----
+
+
 FROM node:18-slim as build
 
 WORKDIR /app

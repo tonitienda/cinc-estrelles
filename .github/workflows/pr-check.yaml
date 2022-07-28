@@ -8,8 +8,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Unit tests
+        run: docker build backend --target test
       - name: System Tests
-        run: docker compose -f docker-compose-system-test.yaml up --exit-code-from system-test
+        run: make test-system
       - name: BDD Tests
-        run: docker compose -f docker-compose-bdd-tests.yaml up --exit-code-from bdd-tests
- 
+        run: make test-bdd

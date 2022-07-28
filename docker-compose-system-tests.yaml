@@ -4,7 +4,7 @@ services:
     build:
       context: backend
 
-  system-test:
+  system-tests:
     depends_on:
       - backend
     build:
