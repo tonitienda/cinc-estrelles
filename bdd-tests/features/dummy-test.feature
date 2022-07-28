@@ -3,7 +3,7 @@ Feature: Dummy
 
     Scenario Outline: Send Valid Dummy Request
         When the client sends "<id>", "<name>", "<description>", "<extra>"
-        Then the status should be 200
+        Then the status should be 201
 
         # Fields with <ignore> valud are not sent
         Examples:
