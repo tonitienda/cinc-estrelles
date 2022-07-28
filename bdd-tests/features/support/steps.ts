@@ -42,6 +42,23 @@ When(
   }
 );
 
+When("the client queries with {string}", async (id) => {
+  const data = {
+    ...(ignored(id) ? {} : { id }),
+  };
+
+  try {
+    const result = await axios.get(`http://backend:3000/dummy?id=${id}`);
+    world.result = result;
+  } catch (error: any) {
+    world.result = error.response;
+  }
+});
+
 Then("the status should be {int}", (status) => {
   assert.strictEqual(world.result.status, status);
+});
+
+Then("the name should be {string}", (name) => {
+  assert.strictEqual(world.result.data.name, name);
 });

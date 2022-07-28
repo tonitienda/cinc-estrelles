@@ -7,11 +7,13 @@ export type Query<TResult> = (
 ) => [TResult | null, BusinessError | null];
 
 export type Request = {
-  body: unknown;
+  body?: unknown;
+  query?: unknown;
 };
 
 export type Response = {
   status: (status: number) => Response;
   end: () => void;
   send: (data: any) => Response;
+  json: (data: any) => Response;
 };

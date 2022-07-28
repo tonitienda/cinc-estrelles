@@ -1,0 +1,7 @@
+version: '2.4'
+services:
+  backend:
+    build:
+      context: backend
+    ports:
+      - 3000:3000

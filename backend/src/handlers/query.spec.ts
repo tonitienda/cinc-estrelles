@@ -1,7 +1,7 @@
-import { Command } from "../types";
-import { handleCommandRequest } from "./command";
+import { Query } from "../types";
+import { handleQueryRequest } from "./query";
 
-const RequestFake = (body: unknown) => ({ body });
+const RequestFake = (query: unknown) => ({ query });
 
 // We can add constraints. status, send, etc should
 // be called only once
@@ -19,7 +19,7 @@ const ResponseFake = () => {
       body = b;
       return Response;
     },
-    json: (b: unknown) => {
+    json: (b: any) => {
       body = b;
       return Response;
     },
@@ -29,13 +29,13 @@ const ResponseFake = () => {
   return Response;
 };
 
-describe("command-handler", () => {
-  test("No error should send 201 status and empty body", () => {
-    testCommandHandler(() => [null, null], 201, null);
+describe("query-handler", () => {
+  test("No error should send 200 status and data", () => {
+    testQueryHandler(() => ["this is the data", null], 200, "this is the data");
   });
 
   test("No error should send 400 and the right error message", () => {
-    testCommandHandler(
+    testQueryHandler(
       () => [null, { status: 400, message: "This is an error" }],
       400,
       "This is an error"
@@ -43,7 +43,7 @@ describe("command-handler", () => {
   });
 
   test("Should return 500 and generic message if an error is thrown", () => {
-    testCommandHandler(
+    testQueryHandler(
       () => {
         throw new Error("This is a technical error");
       },
@@ -53,13 +53,13 @@ describe("command-handler", () => {
   });
 });
 
-const testCommandHandler = (
-  commandHandler: Command,
+const testQueryHandler = (
+  queryHandler: Query<string>,
   expectedStatus: number,
   expectedBody: any
 ) => {
   let responseFake = ResponseFake();
-  handleCommandRequest(commandHandler)(RequestFake(null), responseFake);
+  handleQueryRequest(queryHandler)(RequestFake(null), responseFake);
 
   let report = responseFake.get();
   expect(report.status).toEqual(expectedStatus);

@@ -17,5 +17,5 @@ export const validate = <T>(
     return [data as T, null];
   }
 
-  return [null, InputNotValid(validator.errors.toString())];
+  return [null, InputNotValid(JSON.stringify(validator.errors))];
 };
