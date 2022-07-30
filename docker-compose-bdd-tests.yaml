@@ -1,9 +1,6 @@
 version: '2.4'
 services:
-  backend:
-    build:
-      context: backend
-
+  
   bdd-tests:
     depends_on:
       - backend

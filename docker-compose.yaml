@@ -1,7 +1,14 @@
 version: '2.4'
 services:
   backend:
+    depends_on:
+      - database
     build:
       context: backend
     ports:
       - 3000:3000
+
+  database:
+    image: postgres:14.4-alpine
+    environment:
+      - POSTGRES_PASSWORD=abcde12345
