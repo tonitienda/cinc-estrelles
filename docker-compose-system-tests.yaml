@@ -1,12 +1,11 @@
 version: '2.4'
 services:
-  backend:
-    build:
-      context: backend
 
   system-tests:
     depends_on:
       - backend
+      - database
     build:
       context: system-test
+
   
