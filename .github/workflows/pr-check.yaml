@@ -8,9 +8,28 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Unit tests
-        run: docker build backend --target test
       - name: System Tests
         run: make test-system
+  BackendUnitTests:
+    name: backend-unit-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Unit tests
+        run: docker build backend --target test
+  BackendBDDTests:
+    name: backend-bdd-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: BDD Tests
         run: make test-bdd
+  AllChecksPassed:
+    name: all-checks-passed
+    runs-on: ubuntu-latest
+    needs: [BackendUnitTests, BackendSystemTests, BackendBDDTests]
+    steps:
+      - name: Print
+        run: echo "All Succeeded"

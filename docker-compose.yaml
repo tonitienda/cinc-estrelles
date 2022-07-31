@@ -6,6 +6,7 @@ services:
       - db_migrations
     build:
       context: backend
+      target: prod
     ports:
       - 3000:3000
 

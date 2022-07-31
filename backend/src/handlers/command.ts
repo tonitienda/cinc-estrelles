@@ -3,13 +3,19 @@ import { Command, Request, Response } from "../types";
 export const handleCommandRequest =
   (command: Command) => (req: Request, res: Response) => {
     try {
-      const [_, err] = command(req.body);
+      const [data, err] = command(req.body);
 
       if (err) {
-        res.status(err.status).send(err.message);
-      } else {
-        res.status(201).end();
+        console.log(err.message);
+        return res.status(err.status).send(err.message);
       }
+
+      if (data === null) {
+        return res.status(201).end();
+      }
+
+      console.log(`Status 200`);
+      return res.status(200).send(data);
     } catch (err: any) {
       // TODO - Trace properly
       console.log(err.message);

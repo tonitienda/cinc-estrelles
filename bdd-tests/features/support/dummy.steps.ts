@@ -6,12 +6,6 @@ import { strict as assert } from "assert";
 //        and should not be shared to allow paralel execution
 let world: any = {};
 
-Given("Backend is ready", async () => {
-  const result = await axios.get("http://backend:3000/healthz");
-
-  assert(result.status === 200);
-});
-
 When("the greeter says hello", () => {
   console.log("Hello");
 });

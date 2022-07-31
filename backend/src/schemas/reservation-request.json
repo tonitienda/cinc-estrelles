@@ -1,0 +1,45 @@
+{
+  "type": "object",
+  "title": "Reservation Request",
+  "description": "Data to be provided to create a reservation",
+  "additionalProperties": false,
+  "required": [
+    "customerEmail",
+    "customerName",
+    "checkin",
+    "checkout",
+    "numAdults",
+    "numChildren",
+    "roomType"
+  ],
+  "properties": {
+    "customerName": {
+      "type": "string"
+    },
+    "customerEmail": {
+      "type": "string",
+      "format": "email"
+    },
+    "checkin": {
+      "type": "string",
+      "format": "date"
+    },
+    "checkout": {
+      "type": "string",
+      "format": "date"
+    },
+    "numAdults": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "numChildren": {
+      "type": "integer"
+    },
+    "roomType": {
+      "type": "string"
+    },
+    "specialRequests": {
+      "type": "string"
+    }
+  }
+}

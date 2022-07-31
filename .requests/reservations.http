@@ -1,0 +1,12 @@
+POST http://localhost:3000/reservations
+content-type: application/json
+
+{
+    "customerName": "John Doe",
+    "customerEmail": "john.doe@example.com",
+    "checkin": "2022-10-12",
+    "checkout": "2022-10-14",
+    "numAdults": 2,
+    "numChildren": 0,
+    "roomType": "suite"
+}

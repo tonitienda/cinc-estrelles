@@ -1,6 +1,9 @@
 import { BusinessError } from "../errors";
 
-export type Command = (input: unknown) => [null, BusinessError | null];
+type ResourceId = { id: string };
+export type Command = (
+  input: unknown
+) => [null | ResourceId, BusinessError | null];
 
 export type Query<TResult> = (
   input: unknown

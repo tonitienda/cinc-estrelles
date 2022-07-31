@@ -1,5 +1,9 @@
 version: '2.4'
 services:
+  
+  backend:
+    build:
+      target: prod
 
   system-tests:
     depends_on:
