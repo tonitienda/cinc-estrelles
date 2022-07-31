@@ -1,0 +1,14 @@
+version: '2.4'
+services: {}
+#    pgadmin:
+#     image: dpage/pgadmin4
+#     # This container is very verbose and does not provide information about the application
+#     # so we do not let it log
+#     logging:
+#       driver: "none"
+#     environment:
+#       PGADMIN_DEFAULT_EMAIL: admin@admin.com
+#       PGADMIN_DEFAULT_PASSWORD: root
+#     ports:
+#       - "5050:80"
+   
