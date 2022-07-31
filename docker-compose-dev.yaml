@@ -1,5 +1,12 @@
 version: '2.4'
-services: {}
+services: 
+  # Overwrites the default values of backend - prod.
+  backend:
+    build:
+      target: dev
+    volumes:
+      - ./backend/src:/app/src
+      
 #    pgadmin:
 #     image: dpage/pgadmin4
 #     # This container is very verbose and does not provide information about the application

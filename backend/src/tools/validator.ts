@@ -2,7 +2,7 @@ import Ajv, { Schema, ValidateFunction } from "ajv";
 import addFormats from "ajv-formats";
 import { InputNotValid, BusinessError } from "../errors";
 
-const ajv = new Ajv({ removeAdditional: true });
+const ajv = new Ajv({ removeAdditional: true, allErrors: true });
 addFormats(ajv);
 
 export const makeValidator = <T>(schema: any) => ajv.compile<T>(schema);

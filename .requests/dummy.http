@@ -1,2 +1,1 @@
-GET
-http://localhost:3000/dummy?id=1f3654a4-6bbb-4173-b117-6dccda2e1920
+GET http://localhost:3000/dummy?id=1f3654a4-6bbb-4173-b117-6dccda2e1920
