@@ -1,6 +1,6 @@
 import Ajv, { Schema, ValidateFunction } from "ajv";
 import addFormats from "ajv-formats";
-import { InputNotValid, BusinessError } from "../errors";
+import { InvalidRequest, BusinessError } from "../errors";
 
 const ajv = new Ajv({ removeAdditional: true, allErrors: true });
 addFormats(ajv);
@@ -17,5 +17,5 @@ export const validate = <T>(
     return [data as T, null];
   }
 
-  return [null, InputNotValid(JSON.stringify(validator.errors))];
+  return [null, InvalidRequest(JSON.stringify(validator.errors))];
 };

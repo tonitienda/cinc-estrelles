@@ -3,24 +3,8 @@ services:
   backend:
     depends_on:
       - database
-      - db_migrations
     build:
       context: backend
       target: prod
     ports:
       - 3000:3000
-
-  db_migrations: 
-    depends_on: 
-      - database
-    image:  flyway/flyway:9.0.4
-    command: -url=jdbc:postgresql://database:5432/ruteho -user=ruteho -password=abcde12345 -connectRetries=60 migrate
-    volumes:
-      - ./database/migrations:/flyway/sql
-   
-  database:
-    image: postgres:14.4-alpine
-    environment:
-      - POSTGRES_PASSWORD=abcde12345
-      - POSTGRES_USER=ruteho
-      - POSTGRES_DB=ruteho

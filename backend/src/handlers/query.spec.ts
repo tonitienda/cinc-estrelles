@@ -30,36 +30,37 @@ const ResponseFake = () => {
 };
 
 describe("query-handler", () => {
-  test("No error should send 200 status and data", () => {
-    testQueryHandler(() => ["this is the data", null], 200, "this is the data");
-  });
-
-  test("No error should send 400 and the right error message", () => {
+  test("No error should send 200 status and data", () =>
     testQueryHandler(
-      () => [null, { status: 400, message: "This is an error" }],
+      async () => ["this is the data", null],
+      200,
+      "this is the data"
+    ));
+
+  test("No error should send 400 and the right error message", () =>
+    testQueryHandler(
+      async () => [null, { status: 400, message: "This is an error" }],
       400,
       "This is an error"
-    );
-  });
+    ));
 
-  test("Should return 500 and generic message if an error is thrown", () => {
+  test("Should return 500 and generic message if an error is thrown", () =>
     testQueryHandler(
-      () => {
+      async () => {
         throw new Error("This is a technical error");
       },
       500,
       "Unexpected server error"
-    );
-  });
+    ));
 });
 
-const testQueryHandler = (
+const testQueryHandler = async (
   queryHandler: Query<string>,
   expectedStatus: number,
   expectedBody: any
 ) => {
   let responseFake = ResponseFake();
-  handleQueryRequest(queryHandler)(RequestFake(null), responseFake);
+  await handleQueryRequest(queryHandler)(RequestFake(null), responseFake);
 
   let report = responseFake.get();
   expect(report.status).toEqual(expectedStatus);

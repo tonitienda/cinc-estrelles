@@ -1,13 +1,14 @@
 import { BusinessError } from "../errors";
 
-type ResourceId = { id: string };
+export type ResourceId = { id: string };
+
 export type Command = (
   input: unknown
-) => [null | ResourceId, BusinessError | null];
+) => Promise<[null | ResourceId, BusinessError | null]>;
 
 export type Query<TResult> = (
   input: unknown
-) => [TResult | null, BusinessError | null];
+) => Promise<[TResult | null, BusinessError | null]>;
 
 export type Request = {
   body?: unknown;

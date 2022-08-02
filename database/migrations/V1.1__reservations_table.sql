@@ -1,4 +1,3 @@
-CREATE SCHEMA reservations;
 
 CREATE TABLE reservations.reservations (
     id UUID NOT NULL PRIMARY KEY,
@@ -9,6 +8,7 @@ CREATE TABLE reservations.reservations (
     num_adults INTEGER,
     num_children INTEGER,
     room_type TEXT,
-    special_requests TEXT
-  
+    special_requests TEXT,
+    source_origin VARCHAR,
+    source_reservation_id VARCHAR
 );

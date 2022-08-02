@@ -1,0 +1,44 @@
+{
+  "type": "object",
+  "title": "Draft Reservation Request",
+  "description": "Data to be provided to create a reservation with less constraits so it can be processed by humans",
+  "additionalProperties": false,
+  "properties": {
+    "customerName": {
+      "type": "string"
+    },
+    "customerEmail": {
+      "type": "string"
+    },
+    "checkin": {
+      "type": "string"
+    },
+    "checkout": {
+      "type": "string"
+    },
+    "numAdults": {
+      "type": ["string", "integer"]
+    },
+    "numChildren": {
+      "type": ["string", "integer"]
+    },
+    "roomType": {
+      "type": "string"
+    },
+    "specialRequests": {
+      "type": "string"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "origin": {
+          "type": "string"
+        },
+        "reservationId": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
