@@ -10,11 +10,13 @@
     "checkout",
     "numAdults",
     "numChildren",
-    "roomType"
+    "roomType",
+    "source"
   ],
   "properties": {
     "customerName": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "customerEmail": {
       "type": "string",
@@ -36,10 +38,25 @@
       "type": "integer"
     },
     "roomType": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "specialRequests": {
       "type": "string"
+    },
+    "source": {
+      "type": "object",
+      "required": ["origin", "reservationId"],
+      "properties": {
+        "origin": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reservationId": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
     }
   }
 }

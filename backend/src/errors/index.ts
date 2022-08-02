@@ -8,7 +8,17 @@ export const ResourceNotFound = (resourceType: string): BusinessError => ({
   message: `The ${resourceType} could not be found.`,
 });
 
-export const InputNotValid = (errors: string): BusinessError => ({
+export const InvalidRequest = (errors: string): BusinessError => ({
   status: 400,
   message: errors,
+});
+
+export const ResourceAcceptedWithErrors = (errors: string): BusinessError => ({
+  status: 202,
+  message: errors,
+});
+
+export const UnknownError = (): BusinessError => ({
+  status: 500,
+  message: "Unknown error",
 });

@@ -2,9 +2,9 @@ import { Query, Request, Response } from "../types";
 
 export const handleQueryRequest =
   <TResult>(query: Query<TResult>) =>
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     try {
-      const [data, err] = query(req.query);
+      const [data, err] = await query(req.query);
 
       if (err) {
         res.status(err.status).send(err.message);

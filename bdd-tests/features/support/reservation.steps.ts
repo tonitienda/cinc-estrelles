@@ -7,9 +7,17 @@ import { strict as assert } from "assert";
 let world: any = {};
 
 const ignored = (str: string) => str === "<ignore>";
+const tryNumber = (str: string) => {
+  let number = Number(str);
+
+  if (isNaN(number)) {
+    return str;
+  }
+  return number;
+};
 
 When(
-  "the client requests a reservation with {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}",
+  "the client requests a reservation with {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}",
   async (
     customerEmail,
     customerName,
@@ -18,22 +26,30 @@ When(
     numAdults,
     numChildren,
     roomType,
-    specialRequests
+    specialRequests,
+    origin,
+    reservationId
   ) => {
     const data = {
       ...(ignored(customerEmail) ? {} : { customerEmail }),
       ...(ignored(customerName) ? {} : { customerName }),
       ...(ignored(checkin) ? {} : { checkin }),
       ...(ignored(checkout) ? {} : { checkout }),
-      ...(ignored(numAdults) ? {} : { numAdults: Number(numAdults) }),
-      ...(ignored(numChildren) ? {} : { numChildren: Number(numChildren) }),
+      ...(ignored(numAdults) ? {} : { numAdults: tryNumber(numAdults) }),
+      ...(ignored(numChildren) ? {} : { numChildren: tryNumber(numChildren) }),
       ...(ignored(roomType) ? {} : { roomType }),
       ...(ignored(specialRequests) ? {} : { specialRequests }),
+      source: {
+        ...(ignored(origin) ? {} : { origin }),
+        ...(ignored(reservationId) ? {} : { reservationId }),
+      },
     };
 
     try {
-      const result = await axios.post("http://backend:3000/reservations", data);
-      console.log(`result:`, result.data);
+      const result = await axios.post(
+        "http://backend:3000/import-reservation",
+        data
+      );
       world.result = result;
     } catch (error: any) {
       world.result = error.response;
