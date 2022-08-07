@@ -56,7 +56,7 @@ WORKDIR /app
 
 COPY nodemon.json ./
 
-CMD npx nodemon -L src/index.ts -watch src
+CMD npx nodemon -watch src --exec "yarn run generate-model; ts-node src/index.ts"
 
 
 # ---------------
