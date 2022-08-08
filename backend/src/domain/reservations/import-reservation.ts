@@ -4,6 +4,7 @@ import DraftReservationRequestSchema from "../../schemas/draft-reservation-reque
 import { makeValidator, validate } from "../../tools/validator";
 import { Command } from "../../types";
 import { v4 as uuid } from "uuid";
+
 import {
   BusinessError,
   InvalidRequest,
@@ -13,9 +14,12 @@ import {
 import { ValidateFunction } from "ajv";
 import { DraftReservationRequest } from "../../models/draft-reservation-request";
 
-type Dependencies = {
+export type Dependencies = {
   dbClient: {
     query: (statement: string, params: any[]) => any;
+  };
+  broker: {
+    publish: (topic: string, data: object) => void;
   };
 };
 
@@ -85,7 +89,7 @@ const importReservationToTable = async (
 // If a reservation has the correct format it will be saved in the reservations table
 // If there is some missing information we still need to store the request and process it manually
 // before if can be considered a correct reservation.
-export const importReservation: (dependencies: Dependencies) => Command =
+export const execute: (dependencies: Dependencies) => Command =
   (dependencies: Dependencies) => async (input: unknown) => {
     let [newId, err] = await importReservationToTable(
       dependencies,

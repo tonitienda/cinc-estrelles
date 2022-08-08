@@ -2,10 +2,17 @@ version: '2.4'
 services: 
   # Overwrites the default values of backend - prod.
   backend:
+    depends_on:
+      - database
+      - broker
     build:
       target: dev
     volumes:
       - ./backend/src:/app/src
+
+  broker:
+    ports:
+      - 8222:8222
       
 #    pgadmin:
 #     image: dpage/pgadmin4
