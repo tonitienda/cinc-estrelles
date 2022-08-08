@@ -1,0 +1,9 @@
+{
+  "name": "test",
+  "version": "1.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "http://localhost:4873"
+  }
+}
