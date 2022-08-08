@@ -1,0 +1,12 @@
+version: '2.4'
+services:
+  npm_registry:
+    build:
+      context: npm_registry
+  backend:
+    build:
+      context: backend
+      target: prod
+    depends_on:
+      - npm_registry
+  
