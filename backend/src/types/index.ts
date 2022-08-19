@@ -3,16 +3,16 @@ import { BusinessError } from "../errors";
 export type ResourceId = { id: string };
 
 export type Command = (
-  input: unknown
+  input: any
 ) => Promise<[null | ResourceId, BusinessError | null]>;
 
 export type Query<TResult> = (
-  input: unknown
+  input: any
 ) => Promise<[TResult | null, BusinessError | null]>;
 
 export type Request = {
-  body?: unknown;
-  query?: unknown;
+  body?: any;
+  query?: any;
 };
 
 export type Response = {

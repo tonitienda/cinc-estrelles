@@ -17,5 +17,26 @@ export const connectClient = () => {
 
   pool.connect();
 
-  return pool;
+  return { executeTransaction, query: pool.query };
+};
+
+export const executeTransaction = async (
+  statements: { statement: string; params: any[] }[]
+): Promise<void> => {
+  try {
+    await pool.query("BEGIN;");
+
+    for (const { statement, params } of statements) {
+      await pool.query(statement, params);
+    }
+    await pool.query("COMMIT;");
+  } catch (err) {
+    console.error(err);
+
+    // Do not await the rollback. If there is a problem with the connection
+    // the rollback will also fail but we can ignore the error
+    pool.query("ROLLBACK;");
+
+    throw err;
+  }
 };

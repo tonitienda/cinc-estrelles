@@ -1,14 +1,11 @@
 
 CREATE TABLE reservations.reservations (
     id UUID NOT NULL PRIMARY KEY,
-    customer_email VARCHAR,
-    customer_name VARCHAR,
-    checkin DATE,
-    checkout DATE,
-    num_adults INTEGER,
-    num_children INTEGER,
-    room_type TEXT,
-    special_requests TEXT,
-    source_origin VARCHAR,
-    source_reservation_id VARCHAR
+    data JSONB
+);
+
+CREATE TABLE reservations.reservation_events (
+    id UUID NOT NULL PRIMARY KEY,
+    reservation_id UUID NOT NULL,
+    data JSONB
 );

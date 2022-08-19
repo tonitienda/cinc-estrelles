@@ -4,6 +4,9 @@ import * as broker from "./tools/broker";
 export type SystemDependencies = {
   dbClient: {
     query: (statement: string, params: any[]) => any;
+    executeTransaction: (
+      statements: { statement: string; params: any[] }[]
+    ) => Promise<void>;
   };
   broker: {
     publish: (topic: string, data: object) => void;
