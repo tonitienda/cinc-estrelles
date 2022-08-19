@@ -1,10 +1,14 @@
 import { ReservationRequest } from "../../models/reservation-request";
 import ReservationRequestSchema from "../../schemas/reservation-request.json";
-import { makeValidator, validate } from "../../tools/validator";
+import ReservationSchema from "../../schemas/reservation.json";
+import ReservationEventSchema from "../../schemas/reservation-event.json";
+import validator, { makeValidator, validate } from "../../tools/validator";
 import { Command } from "../../types";
 import { v4 as uuid } from "uuid";
 
 import { ResourceAcceptedWithErrors, UnknownError } from "../../errors";
+import { Reservation } from "../../models/reservation";
+import { ReservationEvent } from "../../models/reservation-event";
 
 export type Dependencies = {
   dbClient: {
@@ -17,7 +21,22 @@ export type Dependencies = {
   };
 };
 
-const validator = makeValidator<ReservationRequest>(ReservationRequestSchema);
+const requestValidator = validator.getSchema<ReservationRequest>(
+  "reservation-request"
+);
+const reservationValidator = validator.getSchema<Reservation>("reservation");
+const eventValidator =
+  validator.getSchema<ReservationEvent>("reservation-event");
+
+if (!requestValidator) {
+  throw new Error("Validator for reservation-request could not be created");
+}
+if (!reservationValidator) {
+  throw new Error("Validator for reservation could not be created");
+}
+if (!eventValidator) {
+  throw new Error("Validator for reservation-event could not be created");
+}
 
 const saveData = async (
   dependencies: Dependencies,
@@ -26,8 +45,41 @@ const saveData = async (
   data: any,
   events_table: string,
   events_refid_column: string,
-  eventType: string
+  eventType: string,
+  // TODO - This is a antipattern. Refactor the code
+  needsValidation: boolean
 ) => {
+  const reservation = { id, ...data };
+
+  const reservationEvent = {
+    header: {
+      id: uuid(),
+      type: eventType,
+      timestamp: Math.floor(new Date().getTime() / 1000),
+    },
+    body: reservation,
+  };
+
+  if (needsValidation) {
+    const [_, err] = validate(reservationValidator, reservation);
+
+    if (err) {
+      console.error(
+        `The reservation is not well formed: ${reservation} . Errors: ${err}`
+      );
+      throw new Error("Unexpected error");
+    }
+
+    const [__, err2] = validate(eventValidator, reservationEvent);
+
+    if (err2) {
+      console.error(
+        `The reservation event is not well formed: ${reservationEvent} . Errors: ${err2}`
+      );
+      throw new Error("Unexpected error");
+    }
+  }
+
   await dependencies.dbClient.executeTransaction([
     {
       statement: `INSERT INTO reservations.${table} (id, data)
@@ -60,7 +112,7 @@ const saveData = async (
 // before if can be considered a correct reservation.
 export const execute: (dependencies: Dependencies) => Command =
   (dependencies: Dependencies) => async (input: any) => {
-    const [reservationRequest, err] = validate(validator, input);
+    const [reservationRequest, err] = validate(requestValidator, input);
     const newId = uuid();
 
     const resourceId = { id: newId };
@@ -73,7 +125,8 @@ export const execute: (dependencies: Dependencies) => Command =
         input,
         "reservation_request_events",
         "reservation_request_id",
-        "reservation-request.received"
+        "reservation-request.received",
+        false
       );
 
       let error = err
@@ -90,7 +143,8 @@ export const execute: (dependencies: Dependencies) => Command =
       input,
       "reservation_events",
       "reservation_id",
-      "reservation.received"
+      "reservation.received",
+      true
     );
 
     return [resourceId, null];
