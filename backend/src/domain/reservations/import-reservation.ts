@@ -1,124 +1,97 @@
 import { ReservationRequest } from "../../models/reservation-request";
 import ReservationRequestSchema from "../../schemas/reservation-request.json";
-import DraftReservationRequestSchema from "../../schemas/draft-reservation-request.json";
 import { makeValidator, validate } from "../../tools/validator";
 import { Command } from "../../types";
 import { v4 as uuid } from "uuid";
 
-import {
-  BusinessError,
-  InvalidRequest,
-  ResourceAcceptedWithErrors,
-  UnknownError,
-} from "../../errors";
-import { ValidateFunction } from "ajv";
-import { DraftReservationRequest } from "../../models/draft-reservation-request";
+import { ResourceAcceptedWithErrors, UnknownError } from "../../errors";
 
 export type Dependencies = {
   dbClient: {
-    query: (statement: string, params: any[]) => any;
+    executeTransaction: (
+      statements: { statement: string; params: any[] }[]
+    ) => Promise<void>;
   };
   broker: {
     publish: (topic: string, data: object) => void;
   };
 };
 
-const reservationRequestValidator = makeValidator<ReservationRequest>(
-  ReservationRequestSchema
-);
-const draftReservationRequestValidator = makeValidator<DraftReservationRequest>(
-  DraftReservationRequestSchema
-);
+const validator = makeValidator<ReservationRequest>(ReservationRequestSchema);
 
-type ReservationRequestCombined = DraftReservationRequest | ReservationRequest;
-
-const importReservationToTable = async (
+const saveData = async (
   dependencies: Dependencies,
-  input: unknown,
   table: string,
-  validator: ValidateFunction<ReservationRequestCombined>
-): Promise<[string | null, BusinessError | null]> => {
-  const [reservationRequest, err] = validate(validator, input);
-
-  if (err) {
-    return [null, InvalidRequest(err.message)];
-  }
-
-  if (!reservationRequest) {
-    return [null, UnknownError()];
-  }
-
-  const newId = uuid();
-  const {
-    customerEmail,
-    customerName,
-    checkin,
-    checkout,
-    numAdults,
-    numChildren,
-    roomType,
-    specialRequests,
-    source,
-  } = reservationRequest;
-
-  const { origin, reservationId } = source || {};
-
-  const params = [
-    newId,
-    customerEmail,
-    customerName,
-    checkin,
-    checkout,
-    numAdults,
-    numChildren,
-    roomType,
-    specialRequests,
-    origin,
-    reservationId,
-  ];
-
-  await dependencies.dbClient.query(
-    `INSERT INTO reservations.${table} (id, customer_email, customer_name, checkin, checkout, num_adults, num_children, room_type, special_requests, source_origin, source_reservation_id)
-  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);`,
-    params
-  );
-
-  return [newId, null];
+  id: string,
+  data: any,
+  events_table: string,
+  events_refid_column: string,
+  eventType: string
+) => {
+  await dependencies.dbClient.executeTransaction([
+    {
+      statement: `INSERT INTO reservations.${table} (id, data)
+  VALUES ($1, $2);`,
+      params: [id, { id, ...data }],
+    },
+    {
+      statement: `INSERT INTO reservations.${events_table} (id, ${events_refid_column}, data)
+  VALUES ($1, $2, $3);`,
+      params: [
+        uuid(),
+        id,
+        {
+          header: {
+            type: eventType,
+            timestamp: Math.floor(new Date().getTime() / 1000),
+          },
+          body: {
+            id,
+            ...data,
+          },
+        },
+      ],
+    },
+  ]);
 };
 
 // If a reservation has the correct format it will be saved in the reservations table
 // If there is some missing information we still need to store the request and process it manually
 // before if can be considered a correct reservation.
 export const execute: (dependencies: Dependencies) => Command =
-  (dependencies: Dependencies) => async (input: unknown) => {
-    let [newId, err] = await importReservationToTable(
-      dependencies,
-      input,
-      "reservations",
-      reservationRequestValidator
-    );
+  (dependencies: Dependencies) => async (input: any) => {
+    const [reservationRequest, err] = validate(validator, input);
+    const newId = uuid();
 
-    if (err) {
-      let [_, err2] = await importReservationToTable(
+    const resourceId = { id: newId };
+
+    if (err || !reservationRequest) {
+      await saveData(
         dependencies,
-        input,
         "reservation_requests",
-        draftReservationRequestValidator
+        newId,
+        input,
+        "reservation_request_events",
+        "reservation_request_id",
+        "reservation-request.received"
       );
 
-      if (err2) {
-        return [null, err];
-      }
+      let error = err
+        ? ResourceAcceptedWithErrors(err.message)
+        : UnknownError();
 
-      return [
-        null,
-        ResourceAcceptedWithErrors("The reservation request was not correct."),
-      ];
+      return [null, error];
     }
 
-    if (newId) {
-      return [{ id: newId }, null];
-    }
+    await saveData(
+      dependencies,
+      "reservations",
+      newId,
+      input,
+      "reservation_events",
+      "reservation_id",
+      "reservation.received"
+    );
 
-    return [null, UnknownError()];
+    return [resourceId, null];
   };

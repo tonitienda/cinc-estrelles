@@ -7,16 +7,8 @@ test-bdd: prepare
 test-system: prepare
 	docker compose -f docker-compose-infras.yaml -f docker-compose.yaml -f docker-compose-system-tests.yaml up system-tests --exit-code-from system-tests --build  || (docker compose logs backend && exit 1)
 
-<<<<<<< HEAD
-
-=======
->>>>>>> cbb6cfb (code: import reservations and reservation request)
 dev:
 	docker-compose -f docker-compose.yaml -f docker-compose-infras.yaml -f docker-compose-dev.yaml up backend --build
 
 prod:
-<<<<<<< HEAD
-	docker-compose -f docker-compose.yaml -f docker-compose-db.yaml up backend --build
-=======
 	docker-compose -f docker-compose.yaml -f docker-compose-infras.yaml up backend --build
->>>>>>> cbb6cfb (code: import reservations and reservation request)
