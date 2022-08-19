@@ -1,10 +1,11 @@
 {
-  "$id": "src/schemas/reservation-request.json",
+  "$id": "src/schemas/reservation.json",
   "type": "object",
-  "title": "Reservation Request",
+  "title": "Reservation",
   "description": "Data to be provided to create a reservation",
   "additionalProperties": false,
   "required": [
+    "id",
     "customerEmail",
     "customerName",
     "checkin",

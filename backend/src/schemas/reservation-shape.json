@@ -1,0 +1,58 @@
+{
+  "$id": "src/schemas/reservation-shape.json",
+  "type": "object",
+  "title": "Reservation Shape",
+  "description": "Data to be provided to create a reservation",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "customerName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "customerEmail": {
+      "type": "string",
+      "format": "email"
+    },
+    "checkin": {
+      "type": "string",
+      "format": "date"
+    },
+    "checkout": {
+      "type": "string",
+      "format": "date"
+    },
+    "numAdults": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "numChildren": {
+      "type": "integer"
+    },
+    "roomType": {
+      "type": "string",
+      "minLength": 1
+    },
+    "specialRequests": {
+      "type": "string"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["origin", "reservationId"],
+      "properties": {
+        "origin": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reservationId": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

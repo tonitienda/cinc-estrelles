@@ -1,0 +1,17 @@
+{
+  "$id": "src/schemas/reservation-event.json",
+  "type": "object",
+  "title": "ReservationEvent",
+  "description": "Event to record changes in reservations",
+  "additionalProperties": false,
+  "required": ["header", "body"],
+  "properties": {
+    "header": {
+      "$ref": "src/schemas/event-header.json#"
+    },
+    "body": {
+      "$ref": "src/schemas/reservation-shape.json#",
+      "required": ["id"]
+    }
+  }
+}

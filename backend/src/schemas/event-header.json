@@ -1,0 +1,21 @@
+{
+  "$id": "src/schemas/event-header.json",
+  "type": "object",
+  "title": "EventHeader",
+  "description": "Commont header for all events",
+  "additionalProperties": false,
+  "required": ["type", "timestamp"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "type": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}
