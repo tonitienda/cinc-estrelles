@@ -29,6 +29,32 @@ Reservations --> Broker
 Broker --> Subscribers
 ```
 
+## Data
+
+### Schemas
+
+```mermaid
+flowchart BT
+
+subgraph public
+    event-header
+end
+
+subgraph Reservations
+    reservation
+    reservation-request
+    reservation-shape
+    reservation-event
+end
+
+reservation-event -- extends --> reservation-shape
+reservation-event -- extends --> event-header
+
+reservation-request -- extends --> reservation-shape
+reservation -- extends --> reservation-shape
+
+```
+
 ## Modules
 
 ### Module Decomposition
