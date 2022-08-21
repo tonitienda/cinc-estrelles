@@ -1,0 +1,16 @@
+version: '2.4'
+services: 
+  # Overwrites the default values of backend - prod.
+  backend:
+    depends_on:
+      - reservations_database
+      - broker
+    build:
+      target: dev
+    volumes:
+      - ./reservations-backend/src:/app/src
+
+  broker:
+    ports:
+      - 8222:8222
+

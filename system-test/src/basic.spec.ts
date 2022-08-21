@@ -1,9 +1,9 @@
-import axios from 'axios'
+import axios from "axios";
 
 describe("health", () => {
-    test("healthz endpoint works",async () => {
-        const result = await axios.get("http://backend:3000/healthz")
+  test("healthz endpoint works", async () => {
+    const result = await axios.get("http://reservations_backend:3000/healthz");
 
-        expect(result.status).toEqual(200)
-    })
-})
+    expect(result.status).toEqual(200);
+  });
+});

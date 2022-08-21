@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Unit tests
-        run: docker build backend --target test
+        run: docker build reservations-backend --target test
   backend-bdd-tests:
     name: backend-bdd-tests
     runs-on: ubuntu-latest

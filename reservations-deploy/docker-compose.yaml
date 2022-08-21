@@ -1,11 +1,11 @@
 version: '2.4'
 services:
-  backend:
+  reservations_backend:
     depends_on:
-      - database
+      - reservations_database
       - broker
     build:
-      context: backend
+      context: reservations-backend
       target: prod
     ports:
       - 3000:3000

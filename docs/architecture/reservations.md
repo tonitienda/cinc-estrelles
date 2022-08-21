@@ -65,7 +65,7 @@ flowchart LR
 
 Client(Client)
 
-subgraph Reservations
+subgraph ReservationsBackend
     http-api
     domain
     repository

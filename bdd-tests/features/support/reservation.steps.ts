@@ -47,7 +47,7 @@ When(
 
     try {
       const result = await axios.post(
-        "http://backend:3000/import-reservation",
+        "http://reservations_backend:3000/import-reservation",
         data
       );
       world.result = result;

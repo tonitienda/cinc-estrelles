@@ -2,7 +2,8 @@ import { Pool } from "pg";
 
 // TODO: use env vars for credentials
 const pool = new Pool({
-  host: "database",
+  host: "reservations_database",
+  database: "reservations_database",
   port: 5432,
   user: "ruteho",
   password: "abcde12345",

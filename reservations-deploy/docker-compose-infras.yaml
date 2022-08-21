@@ -1,0 +1,17 @@
+version: '2.4'
+services:
+  db_migrations: 
+    depends_on: 
+      - reservations_database
+    image:  flyway/flyway:9.0.4
+    command: -url=jdbc:postgresql://reservations_database:5432/ruteho -user=ruteho -password=abcde12345 -connectRetries=60 migrate
+    volumes:
+      - ../reservations-database/migrations:/flyway/sql
+   
+  reservations_database:
+    image: postgres:14.4-alpine
+    environment:
+      - POSTGRES_PASSWORD=abcde12345
+      - POSTGRES_USER=ruteho
+      - POSTGRES_DB=reservations_database
+

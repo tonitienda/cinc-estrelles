@@ -3,9 +3,9 @@ services:
   npm_registry:
     build:
       context: npm_registry
-  backend:
+  reservations_backend:
     build:
-      context: backend
+      context: reservations-backend
       target: prod
     depends_on:
       - npm_registry

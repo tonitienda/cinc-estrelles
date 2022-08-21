@@ -8,3 +8,6 @@ CREATE TABLE reservations.reservation_request_events (
     reservation_request_id UUID NOT NULL,
     data JSONB
 );
+
+GRANT INSERT, UPDATE ON reservations.reservation_request_events  TO ruteho;
+GRANT INSERT, UPDATE, DELETE ON reservations.reservation_requests  TO ruteho;
