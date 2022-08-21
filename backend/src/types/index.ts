@@ -13,6 +13,7 @@ export type Query<TResult> = (
 export type Request = {
   body?: any;
   query?: any;
+  params?: any;
 };
 
 export type Response = {

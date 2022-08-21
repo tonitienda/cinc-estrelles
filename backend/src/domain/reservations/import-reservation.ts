@@ -140,7 +140,7 @@ export const execute: (dependencies: Dependencies) => Command =
       );
 
       let error = err
-        ? ResourceAcceptedWithErrors(err.message)
+        ? ResourceAcceptedWithErrors(JSON.stringify(resourceId))
         : UnknownError();
 
       return [null, error];

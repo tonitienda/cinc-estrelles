@@ -17,10 +17,10 @@ export const connectClient = () => {
 
   pool.connect();
 
-  return { executeTransaction, query: pool.query };
+  return { executeTransaction, query, queryOne };
 };
 
-export const executeTransaction = async (
+const executeTransaction = async (
   statements: { statement: string; params: any[] }[]
 ): Promise<void> => {
   try {
@@ -38,5 +38,57 @@ export const executeTransaction = async (
     pool.query("ROLLBACK;");
 
     throw err;
+  }
+};
+
+type QueryResult = {
+  rows: any[];
+  totalCount: number;
+};
+
+const query = async (
+  statement: string,
+  params: any[]
+): Promise<QueryResult> => {
+  try {
+    console.log(`Inside query`);
+    const data = await pool.query(statement, params);
+
+    console.log(`Data`, data);
+    // TODO -  We need to run a special query to get all rows for a paged query
+    return { totalCount: data.rowCount, rows: data.rows.map((r) => r.data) };
+  } catch (err) {
+    console.error(err);
+
+    return { rows: [], totalCount: 0 };
+  }
+};
+
+const queryOne = async (
+  statement: string,
+  params: any[]
+): Promise<any | null> => {
+  try {
+    console.log(`Inside query:`, statement, params);
+    const data = await pool.query(statement, params);
+
+    console.log(`Data`, data);
+
+    if (data.rowCount > 1) {
+      throw Error(`The query returned more than one row: ${statement}`);
+    }
+
+    if (data.rowCount === 0) {
+      return null;
+    }
+
+    const value = data.rows[0];
+
+    console.log(`Returning value:`, value.data);
+    return value.data || null;
+  } catch (err) {
+    console.error(err);
+
+    return null;
   }
 };

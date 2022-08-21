@@ -4,7 +4,7 @@ export const handleQueryRequest =
   <TResult>(query: Query<TResult>) =>
   async (req: Request, res: Response) => {
     try {
-      const [data, err] = await query(req.query);
+      const [data, err] = await query({ ...req.query, ...req.params });
 
       if (err) {
         res.status(err.status).send(err.message);
