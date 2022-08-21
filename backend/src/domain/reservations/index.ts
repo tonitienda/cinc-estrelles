@@ -1,20 +1,29 @@
 import { Router } from "express";
-import * as db from "../../tools/db-client";
-import * as broker from "../../tools/broker";
 
-// TODO - Import from module. Doing .. out of the boundaries of
-// reservations seems not correct
 import { handleCommandRequest } from "../../handlers/command";
 import * as importReservation from "./import-reservation";
+import * as findReservations from "./find-reservations";
+import * as getReservation from "./get-reservation";
+import { handleQueryRequest } from "../../handlers/query";
+import { SystemDependencies } from "../../system";
 
-type ReservationDependencies = importReservation.Dependencies;
-
-export const get = (dependencies: ReservationDependencies) => {
+export const get = (dependencies: SystemDependencies) => {
   const router = Router();
 
   router.post(
     "/import-reservation",
     handleCommandRequest(importReservation.execute(dependencies))
   );
+
+  router.get(
+    "/reservations/:id",
+    handleQueryRequest(getReservation.execute(dependencies))
+  );
+
+  router.get(
+    "/reservations",
+    handleQueryRequest(findReservations.execute(dependencies))
+  );
+
   return router;
 };

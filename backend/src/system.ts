@@ -3,7 +3,12 @@ import * as broker from "./tools/broker";
 
 export type SystemDependencies = {
   dbClient: {
-    query: (statement: string, params: any[]) => any;
+    query: (
+      statement: string,
+      params: any[]
+    ) => Promise<{ rows: any[]; totalCount: number }>;
+    queryOne: (statement: string, params: any[]) => Promise<any | null>;
+
     executeTransaction: (
       statements: { statement: string; params: any[] }[]
     ) => Promise<void>;

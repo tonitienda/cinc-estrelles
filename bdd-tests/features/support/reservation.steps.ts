@@ -53,9 +53,21 @@ When(
       world.result = result;
     } catch (error: any) {
       world.result = error.response;
+      throw error;
     }
   }
 );
+
+Then("the reservation should be found", async () => {
+  const reservationId = world.result.data.id;
+  console.log("id:", reservationId);
+
+  const requestUrl = `http://backend:3000/reservations/${reservationId}`;
+
+  const result = await axios.get(requestUrl);
+
+  assert.strictEqual(result.status, 200);
+});
 
 Then("the status2 should be {int}", (status) => {
   assert.strictEqual(world.result.status, status);

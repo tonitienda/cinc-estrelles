@@ -29,8 +29,8 @@ FROM node:18-slim as service
 
 WORKDIR /app
 
-COPY --from=build /app/features features
 COPY --from=dependencies /app/node_modules node_modules
+COPY --from=build /app/features features
 COPY --from=build /app/package.json .
 COPY cucumber.js .
 

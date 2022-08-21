@@ -8,11 +8,17 @@ import reservationShapeSchema from "../schemas/reservation-shape.json";
 import reservationRequestSchema from "../schemas/reservation-request.json";
 import reservationSchema from "../schemas/reservation.json";
 import reservationEventSchema from "../schemas/reservation-event.json";
+import resourceByIdSchema from "../schemas/resource-by-id.json";
 
 const ajv = new Ajv({ removeAdditional: true, allErrors: true });
 addFormats(ajv);
 
+// TODO - See how to automate this part
 const ajvWithSchemas = ajv
+  .addSchema(
+    resourceByIdSchema,
+    "http://example.com/schemas/resource-by-id.json"
+  )
   .addSchema(eventHeaderSchema, "http://example.com/schemas/event-header.json")
   .addSchema(
     reservationShapeSchema,

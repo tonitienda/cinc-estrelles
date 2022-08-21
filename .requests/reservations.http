@@ -1,3 +1,16 @@
+### QUERIES
+
+GET http://localhost:3000/reservations
+content-type: application/json
+
+###
+
+
+GET http://localhost:3000/reservations/587ab73a-a67e-4031-a9a8-05cb6f47c7a0
+content-type: application/json
+
+### COMMANDS
+
 POST http://localhost:3000/import-reservation
 content-type: application/json
 
