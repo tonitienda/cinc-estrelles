@@ -1,7 +1,4 @@
 import { ReservationRequest } from "../../models/reservation-request";
-import ReservationRequestSchema from "../../schemas/reservation-request.json";
-import ReservationSchema from "../../schemas/reservation.json";
-import ReservationEventSchema from "../../schemas/reservation-event.json";
 import validator, { makeValidator, validate } from "../../tools/validator";
 import { Command } from "../../types";
 import { v4 as uuid } from "uuid";
@@ -22,11 +19,14 @@ export type Dependencies = {
 };
 
 const requestValidator = validator.getSchema<ReservationRequest>(
-  "reservation-request"
+  "http://example.com/schemas/reservation-request.json"
 );
-const reservationValidator = validator.getSchema<Reservation>("reservation");
-const eventValidator =
-  validator.getSchema<ReservationEvent>("reservation-event");
+const reservationValidator = validator.getSchema<Reservation>(
+  "http://example.com/schemas/reservation.json"
+);
+const eventValidator = validator.getSchema<ReservationEvent>(
+  "http://example.com/schemas/reservation-event.json"
+);
 
 if (!requestValidator) {
   throw new Error("Validator for reservation-request could not be created");
@@ -49,6 +49,7 @@ const saveData = async (
   // TODO - This is a antipattern. Refactor the code
   needsValidation: boolean
 ) => {
+  console.log(`id:`, id, `data:`, data);
   const reservation = { id, ...data };
 
   const reservationEvent = {
@@ -65,7 +66,11 @@ const saveData = async (
 
     if (err) {
       console.error(
-        `The reservation is not well formed: ${reservation} . Errors: ${err}`
+        `The reservation is not well formed: ${JSON.stringify(
+          reservation,
+          null,
+          2
+        )} . Errors: ${JSON.stringify(err, null, 2)}`
       );
       throw new Error("Unexpected error");
     }
@@ -74,7 +79,11 @@ const saveData = async (
 
     if (err2) {
       console.error(
-        `The reservation event is not well formed: ${reservationEvent} . Errors: ${err2}`
+        `The reservation event is not well formed: ${JSON.stringify(
+          reservationEvent,
+          null,
+          2
+        )} . Errors: ${JSON.stringify(err2, null, 2)}`
       );
       throw new Error("Unexpected error");
     }
@@ -116,8 +125,9 @@ export const execute: (dependencies: Dependencies) => Command =
     const newId = uuid();
 
     const resourceId = { id: newId };
-
+    console.log(`reservationRequest:`, reservationRequest);
     if (err || !reservationRequest) {
+      console.log(`Saving invalid reservation request`);
       await saveData(
         dependencies,
         "reservation_requests",
@@ -136,11 +146,12 @@ export const execute: (dependencies: Dependencies) => Command =
       return [null, error];
     }
 
+    console.log(`Saving reservation:`, reservationRequest);
     await saveData(
       dependencies,
       "reservations",
       newId,
-      input,
+      reservationRequest,
       "reservation_events",
       "reservation_id",
       "reservation.received",

@@ -1,5 +1,6 @@
 {
-  "$id": "src/schemas/reservation-event.json",
+  "$id": "http://example.com/schemas/reservation-event.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "title": "ReservationEvent",
   "description": "Event to record changes in reservations",
@@ -7,10 +8,12 @@
   "required": ["header", "body"],
   "properties": {
     "header": {
-      "$ref": "src/schemas/event-header.json#"
+      "type": "object",
+      "$ref": "http://example.com/schemas/event-header.json#"
     },
     "body": {
-      "$ref": "src/schemas/reservation-shape.json#",
+      "type": "object",
+      "$ref": "http://example.com/schemas/reservation-shape.json#",
       "required": ["id"]
     }
   }

@@ -19,7 +19,7 @@ FROM dev_dependencies as with_generated_files
 WORKDIR /app
 
 COPY src src
-RUN yarn run generate-model
+RUN npx ts-node src/generate-model.ts
 
 # -----
 
@@ -56,7 +56,7 @@ WORKDIR /app
 
 COPY nodemon.json ./
 
-CMD npx nodemon -watch src --exec "yarn run generate-model && ts-node src/index.ts"
+CMD npx nodemon -watch src --exec "npx ts-node src/generate-model.ts && npx ts-node src/index.ts"
 
 
 # ---------------
