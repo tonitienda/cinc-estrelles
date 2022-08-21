@@ -13,21 +13,20 @@ const ajv = new Ajv({ removeAdditional: true, allErrors: true });
 addFormats(ajv);
 
 const ajvWithSchemas = ajv
-  .addSchema(eventHeaderSchema)
-  .addSchema(reservationShapeSchema)
-  .addSchema(reservationSchema, "reservation")
-  .addSchema(reservationEventSchema, "reservation-event")
-  .addSchema(reservationRequestSchema, "reservation-request");
-// const ajvWithSchemas = fs
-//   .readdirSync(path.join(__dirname, "..", "schemas"))
-//   .reduce((ajv, filename) => {
-//     console.log(filename);
-//     const schemaPath = path.join(__dirname, "..", "schemas", filename);
-//     console.log(schemaPath);
-//     const schema = JSON.parse(fs.readFileSync(schemaPath).toString());
-//     console.log(schema);
-//     return ajv.addSchema(schema, filename.replace(".json", ""));
-//   }, ajv);
+  .addSchema(eventHeaderSchema, "http://example.com/schemas/event-header.json")
+  .addSchema(
+    reservationShapeSchema,
+    "http://example.com/schemas/reservation-shape.json"
+  )
+  .addSchema(reservationSchema, "http://example.com/schemas/reservation.json")
+  .addSchema(
+    reservationEventSchema,
+    "http://example.com/schemas/reservation-event.json"
+  )
+  .addSchema(
+    reservationRequestSchema,
+    "http://example.com/schemas/reservation-request.json"
+  );
 
 export default ajvWithSchemas;
 
@@ -38,10 +37,13 @@ export const validate = <T>(
   validator: ValidateFunction<T>,
   data: unknown
 ): [T | null, BusinessError | null] => {
-  const valid = validator(data);
+  // We do not want to affect the original data
+  const clonedData = JSON.parse(JSON.stringify(data));
+
+  const valid = validator(clonedData);
 
   if (valid || !validator.errors) {
-    return [data as T, null];
+    return [clonedData as T, null];
   }
 
   return [null, InvalidRequest(JSON.stringify(validator.errors))];

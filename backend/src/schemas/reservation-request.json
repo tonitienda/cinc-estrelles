@@ -1,9 +1,11 @@
 {
-  "$id": "src/schemas/reservation-request.json",
+  "$id": "http://example.com/schemas/reservation-request.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "title": "Reservation Request",
   "description": "Data to be provided to create a reservation",
   "additionalProperties": false,
+  "$ref": "http://example.com/schemas/reservation-shape.json",
   "required": [
     "customerEmail",
     "customerName",
@@ -14,5 +16,55 @@
     "roomType",
     "source"
   ],
-  "$ref": "src/schemas/reservation-shape.json#"
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "customerName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "customerEmail": {
+      "type": "string",
+      "format": "email"
+    },
+    "checkin": {
+      "type": "string",
+      "format": "date"
+    },
+    "checkout": {
+      "type": "string",
+      "format": "date"
+    },
+    "numAdults": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "numChildren": {
+      "type": "integer"
+    },
+    "roomType": {
+      "type": "string",
+      "minLength": 1
+    },
+    "specialRequests": {
+      "type": "string"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["origin", "reservationId"],
+      "properties": {
+        "origin": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reservationId": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
 }
