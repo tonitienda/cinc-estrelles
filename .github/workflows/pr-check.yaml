@@ -1,6 +1,11 @@
 name: pr-check
 on:
   - pull_request
+
+env:
+  COMPOSE_DOCKER_CLI_BUILD: 1
+  DOCKER_BUILDKIT: 1
+
 jobs:
   cancel-runs:
     runs-on: ubuntu-latest
