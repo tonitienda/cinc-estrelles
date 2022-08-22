@@ -69,7 +69,7 @@ subgraph Reservations
     http-api
     domain
     repository
-    writer
+    publisher
 
     DB[(Data Store)]
 end
@@ -82,6 +82,6 @@ http-api -. commands .-> DB
 http-api --> domain
 domain --> repository
 repository --> DB
-DB --> writer
-writer -- events --> Broker
+DB --> publisher
+publisher -- events --> Broker
 ```
