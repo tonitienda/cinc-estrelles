@@ -1,14 +1,8 @@
 version: '2.4'
 services:
-
-  backend:
-    build:
-      target: prod
-    
   bdd-tests:
     depends_on:
-      - backend
-      - database
+      - reservations-backend
+      - reservations-db
     build:
       context: bdd-tests
-  

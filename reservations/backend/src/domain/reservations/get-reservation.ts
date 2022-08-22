@@ -40,7 +40,7 @@ export const execute: (dependencies: Dependencies) => Query<Reservation> =
     }
 
     const result = await dependencies.dbClient.queryOne(
-      "SELECT data FROM reservations.reservations WHERE id = $1;",
+      "SELECT data FROM reservations WHERE id = $1;",
       [request.id]
     );
 

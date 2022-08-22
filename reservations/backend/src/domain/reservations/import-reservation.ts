@@ -91,12 +91,12 @@ const saveData = async (
 
   await dependencies.dbClient.executeTransaction([
     {
-      statement: `INSERT INTO reservations.${table} (id, data)
+      statement: `INSERT INTO ${table} (id, data)
   VALUES ($1, $2);`,
       params: [id, { id, ...data }],
     },
     {
-      statement: `INSERT INTO reservations.${events_table} (id, ${events_refid_column}, data)
+      statement: `INSERT INTO ${events_table} (id, ${events_refid_column}, data)
   VALUES ($1, $2, $3);`,
       params: [
         uuid(),
