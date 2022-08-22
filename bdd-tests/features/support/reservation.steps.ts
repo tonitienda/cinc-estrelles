@@ -47,7 +47,7 @@ When(
 
     try {
       const result = await axios.post(
-        "http://backend:3000/import-reservation",
+        "http://reservations-backend:3000/import-reservation",
         data
       );
       world.result = result;
@@ -62,7 +62,7 @@ Then("the reservation should be found", async () => {
   const reservationId = world.result.data.id;
   console.log("id:", reservationId);
 
-  const requestUrl = `http://backend:3000/reservations/${reservationId}`;
+  const requestUrl = `http://reservations-backend:3000/reservations/${reservationId}`;
 
   const result = await axios.get(requestUrl);
 

@@ -8,24 +8,24 @@ jobs:
       - uses: n1hility/cancel-previous-runs@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-  backend-unit-tests:
-    name: backend-unit-tests
+  reservations-backend-unit-tests:
+    name: reservations-backend-unit-tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Unit tests
-        run: docker build backend --target test
-  backend-bdd-tests:
-    name: backend-bdd-tests
+        run: docker build reservations/backend --target test
+  reservations-bdd-tests:
+    name: reservations-bdd-tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: BDD Tests
         run: make test-bdd
-  backend-system-tests:
-    name: backend-system-tests
+  reservations-system-tests:
+    name: reservations-system-tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,7 +35,12 @@ jobs:
   all-checks-passed:
     name: all-checks-passed
     runs-on: ubuntu-latest
-    needs: [backend-unit-tests, backend-system-tests, backend-bdd-tests]
+    needs:
+      [
+        reservations-backend-unit-tests,
+        reservations-system-tests,
+        reservations-bdd-tests,
+      ]
     steps:
       - name: Print
         run: echo "All Succeeded"

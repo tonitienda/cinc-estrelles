@@ -3,7 +3,7 @@ import axios from "axios";
 import { strict as assert } from "assert";
 
 Given("Backend is ready", async () => {
-  const result = await axios.get("http://backend:3000/healthz");
+  const result = await axios.get("http://reservations-backend:3000/healthz");
 
   assert(result.status === 200);
 });

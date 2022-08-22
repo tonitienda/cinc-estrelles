@@ -2,7 +2,7 @@ import { Pool } from "pg";
 
 // TODO: use env vars for credentials
 const pool = new Pool({
-  host: "database",
+  host: "reservations-db",
   port: 5432,
   user: "ruteho",
   password: "abcde12345",
@@ -16,6 +16,8 @@ export const connectClient = () => {
   });
 
   pool.connect();
+
+  pool.query(`SET search_path TO reservations;`);
 
   return { executeTransaction, query, queryOne };
 };
