@@ -10,7 +10,8 @@ WORKDIR /app
 
 COPY package.json yarn.lock jest.config.js tsconfig.json ./
 
-RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn --frozen-lockfile
+# RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn --frozen-lockfile
+RUN yarn --frozen-lockfile
 
 # -----
 
@@ -29,7 +30,8 @@ WORKDIR /app
 
 COPY package.json yarn.lock ./
 
-RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn --frozen-lockfile --production
+# RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn --frozen-lockfile --production
+RUN yarn --frozen-lockfile --production
 
 
 # ---
