@@ -5,6 +5,7 @@ Feature: Create a Reservation
         When the client requests a reservation with "<customerEmail>", "<customerName>", "<checkin>", "<checkout>", "<numAdults>", "<numChildren>", "<roomType>", "<specialRequests>", "<origin>", "<reservationId>"
         Then the status2 should be <status>
         And the reservation should be found
+        And the reservation event should have been received
 
         # Fields with <ignore> valud are not sent
         Examples:

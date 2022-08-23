@@ -2,7 +2,7 @@
   "$id": "http://example.com/schemas/public-reservation-shape.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "title": "Reservation Shape",
+  "title": "Public Reservation Shape",
   "description": "Data to be provided to create a reservation",
   "additionalProperties": false,
   "properties": {

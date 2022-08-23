@@ -1,5 +1,5 @@
 import { ReservationRequest } from "../../models/reservation-request";
-import validator, { makeValidator, validate } from "../../tools/validator";
+import validator, { validate } from "../../tools/validator";
 import { Command } from "../../types";
 import { v4 as uuid } from "uuid";
 

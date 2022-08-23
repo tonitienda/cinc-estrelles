@@ -4,11 +4,12 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^18.6.0",
-    "typescript": "^4.7.4"
+    "@types/node": "18.6.0",
+    "typescript": "4.7.4"
   },
   "dependencies": {
-    "@cucumber/cucumber": "^8.5.0",
-    "axios": "^0.27.2"
+    "@cucumber/cucumber": "8.5.0",
+    "axios": "0.27.2",
+    "nats": "2.7.1"
   }
 }

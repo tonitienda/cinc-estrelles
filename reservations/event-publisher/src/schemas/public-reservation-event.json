@@ -2,7 +2,7 @@
   "$id": "http://example.com/schemas/reservation-event.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "title": "ReservationEvent",
+  "title": "PublicReservationEvent",
   "description": "Event to record changes in reservations",
   "additionalProperties": false,
   "required": ["header", "body"],
