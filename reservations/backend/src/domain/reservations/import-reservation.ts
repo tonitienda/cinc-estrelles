@@ -43,8 +43,8 @@ const saveData = async (
   table: string,
   id: string,
   data: any,
-  events_table: string,
-  events_refid_column: string,
+  eventsTable: string,
+  eventsRefidColumn: string,
   eventType: string,
   // TODO - This is a antipattern. Refactor the code
   needsValidation: boolean
@@ -89,20 +89,22 @@ const saveData = async (
     }
   }
 
+  const eventId = uuid();
   await dependencies.dbClient.executeTransaction([
     {
-      statement: `INSERT INTO ${table} (id, data)
+      statement: `INSERT INTO reservations.${table} (id, data)
   VALUES ($1, $2);`,
       params: [id, { id, ...data }],
     },
     {
-      statement: `INSERT INTO ${events_table} (id, ${events_refid_column}, data)
+      statement: `INSERT INTO reservations.${eventsTable} (id, ${eventsRefidColumn}, data)
   VALUES ($1, $2, $3);`,
       params: [
-        uuid(),
+        eventId,
         id,
         {
           header: {
+            id: eventId,
             type: eventType,
             timestamp: Math.floor(new Date().getTime() / 1000),
           },
@@ -112,6 +114,10 @@ const saveData = async (
           },
         },
       ],
+    },
+    {
+      statement: `NOTIFY ${eventsTable}, '${eventId}'`,
+      params: [],
     },
   ]);
 };

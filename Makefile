@@ -11,4 +11,4 @@ dev: prepare
 	docker-compose -f reservations/docker-compose.yaml -f reservations/docker-compose-db.yaml -f docker-compose-infras.yaml -f reservations/docker-compose-dev.yaml up reservations-backend --build
 
 prod: prepare
-	docker-compose -f reservations/docker-compose.yaml -f reservations/docker-compose-db.yaml -f docker-compose-infras.yaml up reservations-backend --build
+	docker-compose -f reservations/docker-compose.yaml -f reservations/docker-compose-db.yaml -f docker-compose-infras.yaml up reservations-backend reservations-event-publisher --build

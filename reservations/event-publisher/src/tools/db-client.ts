@@ -17,7 +17,7 @@ export const connectClient = async () => {
 
   await client.connect();
 
-  return { queryOne, onNotification };
+  return { queryOne, onNotification, query };
 };
 
 const onNotification = (
@@ -29,6 +29,8 @@ const onNotification = (
       payload: payload || null,
     })
   );
+
+const query = (statement: string) => client.query(statement);
 
 const queryOne = async (
   statement: string,

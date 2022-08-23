@@ -5,6 +5,7 @@ import { PoolClient } from "pg";
 export type SystemDependencies = {
   dbClient: {
     queryOne: (statement: string, params: any[]) => Promise<any>;
+    query: (statement: string, params?: any[]) => Promise<any>;
     onNotification: (
       listener: (message: { channel: string; payload: string | null }) => void
     ) => void;
@@ -23,7 +24,7 @@ export const connect = async (): Promise<SystemDependencies> => {
   const dbClient = await db.connectClient();
   console.log(`\t💾 DB connected`);
 
-  const messageBroker = await broker.start();
+  const messageBroker = await broker.connect();
   console.log(`\t✉️ Message broker connected`);
 
   return {
