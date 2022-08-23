@@ -1,0 +1,23 @@
+{
+  "$id": "http://example.com/schemas/event-header.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+
+  "type": "object",
+  "title": "EventHeader",
+  "description": "Commont header for all events",
+  "additionalProperties": false,
+  "required": ["type", "timestamp", "id"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "type": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}

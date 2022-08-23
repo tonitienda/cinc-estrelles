@@ -72,8 +72,8 @@ Notifier --> Slack
 
 ## Proposed solution
 
-Use PostgreSQL as DB
-Use flyway for migrations
+- Use the outpost pattern to publish events to a public message broker.
+- Keep notifier within the reservations Bounded Context, so it can have access to the information in the DB.
 
 ## Status
 

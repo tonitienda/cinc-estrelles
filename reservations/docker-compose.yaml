@@ -4,9 +4,17 @@ services:
     depends_on:
       - reservations-db
       - broker
+      - reservations-event-publisher
     build:
       context: reservations/backend
       target: prod
     ports:
       - 3000:3000
 
+  reservations-event-publisher:
+    depends_on:
+      - reservations-db
+      - broker
+    build:
+      context: reservations/event-publisher
+      target: prod

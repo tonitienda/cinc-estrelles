@@ -1,0 +1,36 @@
+{
+  "$id": "http://example.com/schemas/public-reservation-shape.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "Reservation Shape",
+  "description": "Data to be provided to create a reservation",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "checkin": {
+      "type": "string",
+      "format": "date"
+    },
+    "checkout": {
+      "type": "string",
+      "format": "date"
+    },
+    "numAdults": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "numChildren": {
+      "type": "integer"
+    },
+    "roomType": {
+      "type": "string",
+      "minLength": 1
+    },
+    "specialRequests": {
+      "type": "string"
+    }
+  }
+}
