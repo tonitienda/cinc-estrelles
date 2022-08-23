@@ -29,6 +29,7 @@ const executeTransaction = async (
     await pool.query("BEGIN;");
 
     for (const { statement, params } of statements) {
+      console.log(statement);
       await pool.query(statement, params);
     }
     await pool.query("COMMIT;");
