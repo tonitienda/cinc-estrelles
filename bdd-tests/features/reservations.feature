@@ -16,6 +16,8 @@ Feature: Create a Reservation
     Scenario Outline: Invalid Reservation Request
         When the client requests a reservation with "<customerEmail>", "<customerName>", "<checkin>", "<checkout>", "<numAdults>", "<numChildren>", "<roomType>", "<specialRequests>", "<origin>", "<reservationId>"
         Then the status2 should be <status>
+        And the reservation request event should have been received
+
 
         # Fields with <ignore> valud are not sent
         Examples:
