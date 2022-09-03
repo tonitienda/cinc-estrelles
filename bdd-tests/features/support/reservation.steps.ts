@@ -110,3 +110,14 @@ Then("the reservation event should have been received", () => {
 
   assert(!!event);
 });
+
+Then("the reservation request event should have been received", () => {
+  const reservationId = world.result.data.id;
+  const event = world.events.filter(
+    (e) =>
+      e.topic === "reservation_request_events" &&
+      e.data.body.id === reservationId
+  );
+
+  assert(!!event);
+});
