@@ -8,7 +8,7 @@ test-system: prepare
 	docker compose -f reservations/docker-compose-db.yaml -f docker-compose-infras.yaml -f reservations/docker-compose.yaml -f docker-compose-system-tests.yaml up system-tests --exit-code-from system-tests --build  || (docker compose logs reservations-backend && exit 1)
 
 dev: prepare
-	docker-compose -f reservations/docker-compose.yaml -f reservations/docker-compose-db.yaml -f docker-compose-infras.yaml -f reservations/docker-compose-dev.yaml up reservations-frontend --build
+	docker-compose -f reservations/docker-compose.yaml -f reservations/docker-compose-db.yaml -f docker-compose-infras.yaml -f reservations/docker-compose-dev.yaml up --build
 
 prod: prepare
 	docker-compose -f reservations/docker-compose.yaml -f reservations/docker-compose-db.yaml -f docker-compose-infras.yaml up reservations-backend reservations-event-publisher --build
