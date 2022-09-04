@@ -10,13 +10,13 @@ const Home: NextPage = () => {
     <div className={styles.container}>
       <Head>
         <title>The Grand Ruteho</title>
-        <meta name="description" content="The Grand Ruteho" />
+        <meta name="description" content="The Grand Cinc Estrelles" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
         <Typography variant="h1" component="h2">
-          The Grand Ruteho
+          The Grand Cinc Estrelles
         </Typography>;
         <Button variant="contained" color="primary">
           Access
