@@ -18,3 +18,12 @@ services:
     build:
       context: reservations/event-publisher
       target: prod
+
+  reservations-frontend:
+    depends_on:
+      - reservations-backend
+    build:
+      context: reservations/frontend
+      target: prod
+    ports:
+      - 4000:4000
