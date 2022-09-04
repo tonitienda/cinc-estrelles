@@ -42,7 +42,7 @@ export const execute: (dependencies: Dependencies) => Query<Reservation[]> =
     console.log(`dependencies.dbClient.query:`, dependencies.dbClient.query);
 
     const result = await dependencies.dbClient.query(
-      "SELECT data FROM reservations;",
+      "SELECT data FROM reservations.reservations;",
       []
     );
 

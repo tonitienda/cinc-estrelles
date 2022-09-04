@@ -2,11 +2,13 @@ import express, { Request, Response } from "express";
 import * as reservations from "./domain/reservations";
 import bodyParser from "body-parser";
 import * as system from "./system";
+import cors from "cors";
 
 const PORT = 3000;
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 app.get("/healthz", (_: Request, res: Response) => {
   console.log("✅ healthz checked");

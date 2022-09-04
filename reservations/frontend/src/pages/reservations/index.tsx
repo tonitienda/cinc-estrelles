@@ -1,23 +1,6 @@
 import { List, ListItem, ListItemText } from "@mui/material";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-
-type Reservation = {
-  id?: string;
-  customerName?: string;
-  customerEmail?: string;
-  checkin?: string;
-  checkout?: string;
-  numAdults?: number;
-  numChildren?: number;
-  roomType?: string;
-  specialRequests?: string;
-  source?: {
-    origin: string;
-    reservationId: string;
-  };
-  // Properties not in schema that will be calculated in the backend
-  nights: number;
-};
+import { Reservation } from "../../model/reservation";
 
 const listOf = (elements: (string | null)[]) => (
   <List dense={true} style={{ margin: 0, padding: 0 }}>
@@ -52,120 +35,38 @@ const columns: GridColDef[] = [
         row.numChildren ? `children: ${row.numChildren}` : null,
       ]),
   },
-];
-
-const FakeReservationsData: Reservation[] = [
   {
-    id: "87b26d3d-8338-49bc-9f46-f12dc57cd3ce",
-    customerEmail: "jane.doe@example.com",
-    customerName: "Jane Doe",
-    checkin: "2022-10-05",
-    checkout: "2022-10-07",
-    nights: 2,
-    numAdults: 2,
-    numChildren: 1,
-    roomType: "suite",
-    source: {
-      origin: "booking",
-      reservationId: "booking-1234",
-    },
+    field: "roomType",
+    headerName: "Room Type",
+    width: 80,
   },
   {
-    id: "c43382f3-f50e-4597-acfa-9d2c3d96ca37",
-    customerEmail: "john.doe@example.com",
-    customerName: "John Doe",
-    checkin: "2022-10-05",
-    checkout: "2022-10-07",
-    nights: 2,
-    numAdults: 2,
-    numChildren: 0,
-    roomType: "suite",
-    source: {
-      origin: "booking",
-      reservationId: "booking-1234",
-    },
-  },
-  {
-    id: "d7a4ad66-c095-4e83-b701-489965c64ad3",
-    customerEmail: "john.doe@example.com",
-    customerName: "John Doe",
-    checkin: "2022-10-05",
-    checkout: "2022-10-07",
-    nights: 2,
-    numAdults: 2,
-    numChildren: 0,
-    roomType: "suite",
-    source: {
-      origin: "booking",
-      reservationId: "booking-1234",
-    },
-  },
-  {
-    id: "2fcd59ae-da12-4c68-b6fe-2659e91fdaaf",
-    customerEmail: "john.doe@example.com",
-    customerName: "John Doe",
-    checkin: "2022-10-05",
-    checkout: "2022-10-07",
-    nights: 2,
-    numAdults: 2,
-    numChildren: 3,
-    roomType: "suite",
-    source: {
-      origin: "booking",
-      reservationId: "booking-1234",
-    },
-  },
-  {
-    id: "bb362a17-b3c3-4df7-810b-ada45dca4f2c",
-    customerEmail: "john.doe@example.com",
-    customerName: "John Doe",
-    checkin: "2022-10-05",
-    checkout: "2022-10-07",
-    nights: 2,
-    numAdults: 2,
-    numChildren: 0,
-    roomType: "suite",
-    source: {
-      origin: "booking",
-      reservationId: "booking-1234",
-    },
-  },
-  {
-    id: "f6e31b51-ae4c-4cae-a746-9f3b37a59bc9",
-    customerEmail: "john.doe@example.com",
-    customerName: "John Doe",
-    checkin: "2022-10-05",
-    checkout: "2022-10-07",
-    nights: 2,
-    numAdults: 2,
-    numChildren: 0,
-    roomType: "suite",
-    source: {
-      origin: "booking",
-      reservationId: "booking-1234",
-    },
-  },
-  {
-    id: "f27307c3-9d01-4134-b5c9-d4bca42d616c",
-    customerEmail: "john.doe@example.com",
-    customerName: "John Doe",
-    checkin: "2022-10-05",
-    checkout: "2022-10-07",
-    nights: 2,
-    numAdults: 2,
-    numChildren: 0,
-    roomType: "suite",
-    source: {
-      origin: "booking",
-      reservationId: "booking-1234",
-    },
+    field: "source",
+    headerName: "Source",
+    width: 80,
+    renderCell: ({ row }: GridRenderCellParams<Reservation>) => (
+      <ListItemText
+        primary={row.source.origin}
+        secondary={row.source.reservationId}
+      />
+    ),
   },
 ];
 
-const Reservations = () => (
+// This gets called on every request
+export async function getServerSideProps() {
+  // Fetch data from external API
+  const res = await fetch(`http://localhost:4000/api/find-reservations`);
+  const reservations = await res.json();
+
+  // Pass data to the page via props
+  return { props: { reservations } };
+}
+
+const Reservations = ({ reservations }: { reservations: Reservation[] }) => (
   <div style={{ height: "600px", width: "100%" }}>
     <DataGrid
-      rows={FakeReservationsData}
+      rows={reservations}
       columns={columns}
       pageSize={25}
       rowsPerPageOptions={[25, 50]}

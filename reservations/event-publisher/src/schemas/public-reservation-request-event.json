@@ -1,5 +1,5 @@
 {
-  "$id": "http://example.com/schemas/reservation-event.json",
+  "$id": "http://example.com/schemas/public-reservation-request-event.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "title": "Public Reservation Request Event",
