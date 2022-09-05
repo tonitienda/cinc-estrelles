@@ -1,7 +1,7 @@
 import { Reservation } from "../models/reservation";
 import { EventHeader, ReservationEvent } from "../models/reservation-event";
 import { ReservationRequest } from "../models/reservation-request";
-import validator, { makeValidator, validate } from "./validator";
+import validator, { validate } from "./validator";
 
 describe("validator", () => {
   test("Event header should be validated", () => {
@@ -59,13 +59,17 @@ describe("validator", () => {
     }
 
     const data = {
-      customerEmail: "john.doe@example.com",
-      customerName: "John Doe",
-      checkin: "2022-10-25",
-      checkout: "2022-10-27",
-      numAdults: 2,
-      numChildren: 0,
-      roomType: "suite",
+      customer: {
+        email: "john.doe@example.com",
+        name: "John Doe",
+      },
+      reservation: {
+        checkin: "2022-10-25",
+        checkout: "2022-10-27",
+        numAdults: 2,
+        numChildren: 0,
+        roomType: "suite",
+      },
       source: {
         reservationId: "test-1234",
         origin: "test",
@@ -88,13 +92,14 @@ describe("validator", () => {
 
     const data = {
       id: "c88addd0-7c0f-4871-944b-32c6abe26aa8",
-      customerEmail: "john.doe@example.com",
-      customerName: "John Doe",
-      checkin: "2022-10-25",
-      checkout: "2022-10-27",
-      numAdults: 2,
-      numChildren: 0,
-      roomType: "suite",
+      customer: { email: "john.doe@example.com", name: "John Doe" },
+      reservation: {
+        checkin: "2022-10-25",
+        checkout: "2022-10-27",
+        numAdults: 2,
+        numChildren: 0,
+        roomType: "suite",
+      },
       source: {
         reservationId: "test-1234",
         origin: "test",

@@ -1,7 +1,7 @@
-export type Reservation = {
+export type ReservationRequest = {
   id?: string;
   customer?: {
-    name?: string;
+    cname?: string;
     email?: string;
   };
   reservation?: {
@@ -11,11 +11,12 @@ export type Reservation = {
     numChildren?: number;
     roomType?: string;
     specialRequests?: string;
+    // Properties not in schema that will be calculated in the backend
+    nights?: number;
   };
   source?: {
     origin: string;
     reservationId: string;
   };
-  // Properties not in schema that will be calculated in the backend
-  nights: number;
+  [k: string]: any;
 };

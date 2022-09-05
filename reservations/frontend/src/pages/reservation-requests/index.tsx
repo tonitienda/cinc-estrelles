@@ -1,6 +1,16 @@
-import { List, ListItem, ListItemText } from "@mui/material";
+import {
+  Box,
+  Collapse,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { Reservation } from "../../model/reservation";
+import { ReservationRequest } from "../../model/reservation-request";
+
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 const listOf = (elements: (string | null)[]) => (
   <List dense={true} style={{ margin: 0, padding: 0 }}>
@@ -17,16 +27,15 @@ const listOf = (elements: (string | null)[]) => (
 const columns: GridColDef[] = [
   // { field: 'id', headerName: 'ID', width: 70 },
   {
-    field: "customerName",
-    headerName: "Customer name",
+    field: "customer",
+    headerName: "Customer",
     width: 230,
-    valueGetter: ({ row }) => row.customer?.name,
-  },
-  {
-    field: "customerEmail",
-    headerName: "Customer email",
-    width: 230,
-    valueGetter: ({ row }) => row.customer?.email,
+    renderCell: ({ row }: GridRenderCellParams<ReservationRequest>) => (
+      <ListItemText
+        primary={row.customer?.name}
+        secondary={row.customer?.email}
+      />
+    ),
   },
   { field: "checkin", headerName: "Checkin", width: 130, type: "date" },
   {
@@ -39,7 +48,7 @@ const columns: GridColDef[] = [
     field: "guests",
     headerName: "Guests",
     width: 130,
-    renderCell: ({ row }: GridRenderCellParams<Reservation>) =>
+    renderCell: ({ row }: GridRenderCellParams<ReservationRequest>) =>
       listOf([
         row.numAdults ? `adults: ${row.numAdults}` : null,
         row.numChildren ? `children: ${row.numChildren}` : null,
@@ -53,13 +62,37 @@ const columns: GridColDef[] = [
   {
     field: "source",
     headerName: "Source",
-    width: 80,
-    renderCell: ({ row }: GridRenderCellParams<Reservation>) => (
+    width: 120,
+    renderCell: ({ row }: GridRenderCellParams<ReservationRequest>) => (
       <ListItemText
         primary={row.source.origin}
         secondary={row.source.reservationId}
       />
     ),
+  },
+  {
+    field: "raw",
+    headerName: "Request",
+    width: 500,
+    renderCell: ({ row }: GridRenderCellParams<ReservationRequest>) => {
+      return (
+        <>
+          <IconButton aria-label="expand row" size="small">
+            <KeyboardArrowDownIcon />
+          </IconButton>
+          <Collapse
+            in={true}
+            timeout="auto"
+            unmountOnExit
+            style={{ height: "fit-content" }}
+          >
+            <Box sx={{ margin: 1 }}>
+              {listOf(Object.keys(row).map((k) => `${k}: ${row[k]}`))}
+            </Box>
+          </Collapse>
+        </>
+      );
+    },
   },
 ];
 
@@ -73,7 +106,11 @@ export async function getServerSideProps() {
   return { props: { reservations } };
 }
 
-const Reservations = ({ reservations }: { reservations: Reservation[] }) => (
+const Reservations = ({
+  reservations,
+}: {
+  reservations: ReservationRequest[];
+}) => (
   <div style={{ height: "600px", width: "100%" }}>
     <DataGrid
       rows={reservations}
