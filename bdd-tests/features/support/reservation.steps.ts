@@ -60,14 +60,20 @@ When(
     reservationId
   ) => {
     const data = {
-      ...(ignored(customerEmail) ? {} : { customerEmail }),
-      ...(ignored(customerName) ? {} : { customerName }),
-      ...(ignored(checkin) ? {} : { checkin }),
-      ...(ignored(checkout) ? {} : { checkout }),
-      ...(ignored(numAdults) ? {} : { numAdults: tryNumber(numAdults) }),
-      ...(ignored(numChildren) ? {} : { numChildren: tryNumber(numChildren) }),
-      ...(ignored(roomType) ? {} : { roomType }),
-      ...(ignored(specialRequests) ? {} : { specialRequests }),
+      customer: {
+        ...(ignored(customerEmail) ? {} : { email: customerEmail }),
+        ...(ignored(customerName) ? {} : { name: customerName }),
+      },
+      reservation: {
+        ...(ignored(checkin) ? {} : { checkin }),
+        ...(ignored(checkout) ? {} : { checkout }),
+        ...(ignored(numAdults) ? {} : { numAdults: tryNumber(numAdults) }),
+        ...(ignored(numChildren)
+          ? {}
+          : { numChildren: tryNumber(numChildren) }),
+        ...(ignored(roomType) ? {} : { roomType }),
+        ...(ignored(specialRequests) ? {} : { specialRequests }),
+      },
       source: {
         ...(ignored(origin) ? {} : { origin }),
         ...(ignored(reservationId) ? {} : { reservationId }),

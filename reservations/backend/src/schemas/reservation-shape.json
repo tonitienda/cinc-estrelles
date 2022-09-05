@@ -10,35 +10,47 @@
       "type": "string",
       "format": "uuid"
     },
-    "customerName": {
-      "type": "string",
-      "minLength": 1
+    "customer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        }
+      }
     },
-    "customerEmail": {
-      "type": "string",
-      "format": "email"
-    },
-    "checkin": {
-      "type": "string",
-      "format": "date"
-    },
-    "checkout": {
-      "type": "string",
-      "format": "date"
-    },
-    "numAdults": {
-      "type": "integer",
-      "minimum": 0
-    },
-    "numChildren": {
-      "type": "integer"
-    },
-    "roomType": {
-      "type": "string",
-      "minLength": 1
-    },
-    "specialRequests": {
-      "type": "string"
+    "reservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "checkin": {
+          "type": "string",
+          "format": "date"
+        },
+        "checkout": {
+          "type": "string",
+          "format": "date"
+        },
+        "numAdults": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "numChildren": {
+          "type": "integer"
+        },
+        "roomType": {
+          "type": "string",
+          "minLength": 1
+        },
+        "specialRequests": {
+          "type": "string"
+        }
+      }
     },
     "source": {
       "type": "object",

@@ -10,14 +10,8 @@
  */
 export interface Reservation {
   id: string;
-  customerName: string;
-  customerEmail: string;
-  checkin: string;
-  checkout: string;
-  numAdults: number;
-  numChildren: number;
-  roomType: string;
-  specialRequests?: string;
+  customer: {};
+  reservation: {};
   source: {
     origin: string;
     reservationId: string;

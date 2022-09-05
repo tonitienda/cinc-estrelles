@@ -1,8 +1,6 @@
 import Ajv, { Schema, ValidateFunction } from "ajv";
 import addFormats from "ajv-formats";
 import { InvalidRequest, BusinessError } from "../errors";
-import fs from "fs";
-import path from "path";
 import eventHeaderSchema from "../schemas/event-header.json";
 import reservationShapeSchema from "../schemas/reservation-shape.json";
 import reservationRequestSchema from "../schemas/reservation-request.json";
