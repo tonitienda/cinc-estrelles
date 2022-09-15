@@ -1,11 +1,11 @@
 import { AnyValidateFunction } from "ajv/dist/core";
 import { PublicReservationEvent } from "./models/public-reservation-event";
-import { PublicReservationRequestEvent } from "./models/public-reservation-request-event";
+import { PublicReservationRequestEvent } from "./models/public-reservation-draft-event";
 
 import { connect } from "./system";
 import validator, { validate } from "./tools/validator";
 
-const targetChannels = ["reservation_events", "reservation_request_events"];
+const targetChannels = ["reservation_events", "reservation_draft_events"];
 
 const reservationEventValidator = validator.getSchema<PublicReservationEvent>(
   "http://example.com/schemas/public-reservation-event.json"
@@ -13,7 +13,7 @@ const reservationEventValidator = validator.getSchema<PublicReservationEvent>(
 
 const reservationRequestEventValidator =
   validator.getSchema<PublicReservationRequestEvent>(
-    "http://example.com/schemas/public-reservation-request-event.json"
+    "http://example.com/schemas/public-reservation-draft-event.json"
   );
 
 if (!reservationEventValidator) {
@@ -34,7 +34,7 @@ const getValidatorByChannel: (
   switch (channel) {
     case "reservation_events":
       return reservationEventValidator;
-    case "reservation_request_events":
+    case "reservation_draft_events":
       return reservationRequestEventValidator;
     default:
       throw new Error(`${channel} not supported. Data cannot be validated`);
@@ -43,7 +43,7 @@ const getValidatorByChannel: (
 
 // const ValidatorByChannel: { [key: string]: ValidateFunction<exists T> } = {
 //   reservation_events: reservationEventValidator,
-//   reservation_request_events: reservationRequestEventValidator,
+//   reservation_draft_events: reservationRequestEventValidator,
 // };
 
 // TODO - See the information that usually is part of the events headers

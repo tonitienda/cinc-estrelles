@@ -4,8 +4,8 @@ import eventHeaderSchema from "../schemas/event-header.json";
 import reservationShapeSchema from "../schemas/public-reservation-shape.json";
 import reservationEventSchema from "../schemas/public-reservation-event.json";
 
-import reservationRequestEventSchema from "../schemas/public-reservation-request-event.json";
-import reservationRequestShapeSchema from "../schemas/public-reservation-request-shape.json";
+import reservationRequestEventSchema from "../schemas/public-reservation-draft-event.json";
+import reservationRequestShapeSchema from "../schemas/public-reservation-draft-shape.json";
 
 const ajv = new Ajv({ removeAdditional: true, allErrors: true });
 addFormats(ajv);
@@ -23,11 +23,11 @@ const ajvWithSchemas = ajv
   )
   .addSchema(
     reservationEventSchema,
-    "http://example.com/schemas/public-reservation-request-shape.json"
+    "http://example.com/schemas/public-reservation-draft-shape.json"
   )
   .addSchema(
     reservationEventSchema,
-    "http://example.com/schemas/public-reservation-request-event.json"
+    "http://example.com/schemas/public-reservation-draft-event.json"
   );
 
 export default ajvWithSchemas;

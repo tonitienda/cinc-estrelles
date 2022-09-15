@@ -127,20 +127,20 @@ const saveData = async (
 // before if can be considered a correct reservation.
 export const execute: (dependencies: Dependencies) => Command =
   (dependencies: Dependencies) => async (input: any) => {
-    const [reservationRequest, err] = validate(requestValidator, input);
+    const [reservationDraft, err] = validate(requestValidator, input);
     const newId = uuid();
 
     const resourceId = { id: newId };
-    console.log(`reservationRequest:`, reservationRequest);
-    if (err || !reservationRequest) {
+    console.log(`reservationDraft:`, reservationDraft);
+    if (err || !reservationDraft) {
       console.log(`Saving invalid reservation request`);
       await saveData(
         dependencies,
-        "reservation_requests",
+        "reservation_drafts",
         newId,
         input,
-        "reservation_request_events",
-        "reservation_request_id",
+        "reservation_draft_events",
+        "reservation_draft_id",
         "reservation-request.received",
         false
       );
@@ -152,12 +152,12 @@ export const execute: (dependencies: Dependencies) => Command =
       return [null, error];
     }
 
-    console.log(`Saving reservation:`, reservationRequest);
+    console.log(`Saving reservation:`, reservationDraft);
     await saveData(
       dependencies,
       "reservations",
       newId,
-      reservationRequest,
+      reservationDraft,
       "reservation_events",
       "reservation_id",
       "reservation.received",

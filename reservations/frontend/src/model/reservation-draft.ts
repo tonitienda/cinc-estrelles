@@ -1,7 +1,7 @@
-export type ReservationRequest = {
-  id?: string;
+export type ReservationDraft = {
+  id: string;
   customer?: {
-    cname?: string;
+    name?: string;
     email?: string;
   };
   reservation?: {

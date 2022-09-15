@@ -42,7 +42,7 @@ end
 
 subgraph Reservations
     reservation
-    reservation-request
+    reservation-draft
     reservation-shape
     reservation-event
 end
@@ -50,7 +50,7 @@ end
 reservation-event -- extends --> reservation-shape
 reservation-event -- extends --> event-header
 
-reservation-request -- extends --> reservation-shape
+reservation-draft -- extends --> reservation-shape
 reservation -- extends --> reservation-shape
 
 ```

@@ -191,7 +191,7 @@ export default function PrimarySearchAppBar() {
             <Link href="/reservations">
               <a>Reservations</a>
             </Link>
-            <Link href="/reservation-requests">
+            <Link href="/reservation-drafts">
               <a>Requests</a>
             </Link>
           </Box>

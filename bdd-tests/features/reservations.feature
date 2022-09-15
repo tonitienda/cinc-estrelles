@@ -3,7 +3,7 @@ Feature: Create a Reservation
 
     Scenario Outline: Valid Reservation Request
         When the client requests a reservation with "<customerEmail>", "<customerName>", "<checkin>", "<checkout>", "<numAdults>", "<numChildren>", "<roomType>", "<specialRequests>", "<origin>", "<reservationId>"
-        Then the status2 should be <status>
+        Then the status should be <status>
         And the reservation should be found
         And the reservation event should have been received
 
@@ -15,8 +15,9 @@ Feature: Create a Reservation
 
     Scenario Outline: Invalid Reservation Request
         When the client requests a reservation with "<customerEmail>", "<customerName>", "<checkin>", "<checkout>", "<numAdults>", "<numChildren>", "<roomType>", "<specialRequests>", "<origin>", "<reservationId>"
-        Then the status2 should be <status>
+        Then the status should be <status>
         And the reservation request event should have been received
+        And the reservation request should be found
 
 
         # Fields with <ignore> valud are not sent

@@ -1,10 +1,10 @@
-CREATE TABLE reservation_requests (
+CREATE TABLE reservation_drafts (
     id UUID NOT NULL PRIMARY KEY,
     data JSONB
 );
 
-CREATE TABLE reservation_request_events (
+CREATE TABLE reservation_draft_events (
     id UUID NOT NULL PRIMARY KEY,
-    reservation_request_id UUID NOT NULL,
+    reservation_draft_id UUID NOT NULL,
     data JSONB
 );
