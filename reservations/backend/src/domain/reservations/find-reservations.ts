@@ -1,11 +1,7 @@
 import validator, { makeValidator, validate } from "../../tools/validator";
 import { Query } from "../../types";
 
-import {
-  BusinessError,
-  ResourceAcceptedWithErrors,
-  UnknownError,
-} from "../../errors";
+import { BusinessError } from "../../errors";
 import { Reservation } from "../../models/reservation";
 
 export type Dependencies = {

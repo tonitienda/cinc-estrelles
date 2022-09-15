@@ -51,7 +51,7 @@ describe("validator", () => {
 
   test("Reservation request should be validated", () => {
     const reservationRequestValidator = validator.getSchema<ReservationRequest>(
-      "http://example.com/schemas/reservation-request.json"
+      "http://example.com/schemas/reservation-draft.json"
     );
 
     if (!reservationRequestValidator) {

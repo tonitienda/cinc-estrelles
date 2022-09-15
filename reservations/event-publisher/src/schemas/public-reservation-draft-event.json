@@ -1,5 +1,5 @@
 {
-  "$id": "http://example.com/schemas/public-reservation-request-event.json",
+  "$id": "http://example.com/schemas/public-reservation-draft-event.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "title": "Public Reservation Request Event",
@@ -13,7 +13,7 @@
     },
     "body": {
       "type": "object",
-      "$ref": "http://example.com/schemas/public-reservation-request-shape.json#",
+      "$ref": "http://example.com/schemas/public-reservation-draft-shape.json#",
       "required": ["id"]
     }
   }

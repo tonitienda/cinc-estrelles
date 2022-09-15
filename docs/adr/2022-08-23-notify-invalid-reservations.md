@@ -9,7 +9,7 @@ delete it, or go to the source and correct the error there.
 In some cases it can be an urgent task (for example if the reservation is for today)
 so the user expects to get a notification.
 
-In this iteration we will send Slack messages for all the reservation_requests. We will filter them in the future.
+In this iteration we will send Slack messages for all the reservation_drafts. We will filter them in the future.
 
 ## Analysis
 
@@ -32,10 +32,10 @@ will have access to the reservations data.
 
 We can revisit this decision in the future.
 
-We need to publish the public part of the data of the reservation_requests,
+We need to publish the public part of the data of the reservation_drafts,
 so not all services in other bounded contexts will have access to it.
 
-In this case, since we are not sure about what data is stored (the data was saved as reservation_request and not as reservation for that very reason)
+In this case, since we are not sure about what data is stored (the data was saved as reservation_draft and not as reservation for that very reason)
 we should publish the reservation request id and the metadata only.
 
 If the notifier needs more information, it will need to request it from the DB.
@@ -58,12 +58,12 @@ subgraph Public
 end
 
 
-Backend -- reservation_request --> DB
-DB -- reservation_request --> Publisher
-Publisher -- "public(reservation_request)" --> Broker
+Backend -- reservation_draft --> DB
+DB -- reservation_draft --> Publisher
+Publisher -- "public(reservation_draft)" --> Broker
 
-Broker -- "public(reservation_request)" --> Notifier
-DB -- reservation_request --> Notifier
+Broker -- "public(reservation_draft)" --> Notifier
+DB -- reservation_draft --> Notifier
 
 Notifier --> Slack
 

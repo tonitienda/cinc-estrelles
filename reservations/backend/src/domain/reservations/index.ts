@@ -3,7 +3,9 @@ import { Router } from "express";
 import { handleCommandRequest } from "../../handlers/command";
 import * as importReservation from "./import-reservation";
 import * as findReservations from "./find-reservations";
+import * as findReservationRequests from "./find-reservation-drafts";
 import * as getReservation from "./get-reservation";
+import * as getReservationRequest from "./get-reservation-draft";
 import { handleQueryRequest } from "../../handlers/query";
 import { SystemDependencies } from "../../system";
 
@@ -23,6 +25,16 @@ export const get = (dependencies: SystemDependencies) => {
   router.get(
     "/reservations",
     handleQueryRequest(findReservations.execute(dependencies))
+  );
+
+  router.get(
+    "/reservation-drafts",
+    handleQueryRequest(findReservationRequests.execute(dependencies))
+  );
+
+  router.get(
+    "/reservation-drafts/:id",
+    handleQueryRequest(getReservationRequest.execute(dependencies))
   );
 
   return router;

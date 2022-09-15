@@ -21,7 +21,7 @@ Therefore, the list of things to consider should not grow indefenitely.
 Consider in / out schemas. Out schemas can add new "required" fields.
 "In" schemas should only require what is really needed for the operation.
 See if it is possible to create a "shape" schema (reservation-shape.json) with all the fields and no requirements
-and define "operation" schemas (reservation-request.json) that references the "shape" schema and defines only
+and define "operation" schemas (reservation-draft.json) that references the "shape" schema and defines only
 the required fields.
 Same for events and events header for example.
 Shape schemas can be shared accross boundaries? (see in/out data. Maybe we need reservations-shape-public.json with a subset

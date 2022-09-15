@@ -29,7 +29,7 @@ const ajvWithSchemas = ajv
   )
   .addSchema(
     reservationRequestSchema,
-    "http://example.com/schemas/reservation-request.json"
+    "http://example.com/schemas/reservation-draft.json"
   );
 
 export default ajvWithSchemas;

@@ -104,7 +104,7 @@ Then("the reservation should be found", async () => {
   assert.strictEqual(result.status, 200);
 });
 
-Then("the status2 should be {int}", (status) => {
+Then("the status should be {int}", (status) => {
   assert.strictEqual(world.result.status, status);
 });
 
@@ -121,9 +121,19 @@ Then("the reservation request event should have been received", () => {
   const reservationId = world.result.data.id;
   const event = world.events.filter(
     (e) =>
-      e.topic === "reservation_request_events" &&
-      e.data.body.id === reservationId
+      e.topic === "reservation_draft_events" && e.data.body.id === reservationId
   );
 
   assert(!!event);
+});
+
+Then("the reservation request should be found", async () => {
+  const reservationId = world.result.data.id;
+  console.log("id:", reservationId);
+
+  const requestUrl = `http://reservations-backend:3000/reservation-drafts/${reservationId}`;
+
+  const result = await axios.get(requestUrl);
+
+  assert.strictEqual(result.status, 200);
 });
