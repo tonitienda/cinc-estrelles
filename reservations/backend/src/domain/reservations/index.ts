@@ -6,6 +6,7 @@ import * as findReservations from "./find-reservations";
 import * as findReservationRequests from "./find-reservation-drafts";
 import * as getReservation from "./get-reservation";
 import * as getReservationRequest from "./get-reservation-draft";
+import * as saveReservation from "./save-reservation";
 import { handleQueryRequest } from "../../handlers/query";
 import { SystemDependencies } from "../../system";
 
@@ -15,6 +16,11 @@ export const get = (dependencies: SystemDependencies) => {
   router.post(
     "/import-reservation",
     handleCommandRequest(importReservation.execute(dependencies))
+  );
+
+  router.post(
+    "/save-reservation",
+    handleCommandRequest(saveReservation.execute(dependencies))
   );
 
   router.get(

@@ -17,14 +17,14 @@ content-type: application/json
 {
     "customer": {
         "name": "John Doe",
-        "email": "john.doe@example.com",
+        "email": "john.doe@example.com"
     },
     "reservation": {
         "checkin": "2022-10-12",
         "checkout": "2022-10-14",
         "numAdults": 2,
         "numChildren": 0,
-        "roomType": "suite",
+        "roomType": "suite"
     },
     "source": {
         "origin": "booking.com",
@@ -40,14 +40,14 @@ content-type: application/json
 {
     "customer": {
         "name": "John Doe",
-        "email": "john.doe@example.com",
+        "email": "john.doe@example.com"
     },
     "reservation": {
         "checkin": "2022-10-12",
         "checkout": "2022-10-14",
         "numAdults": 2,
         "numChildren": "zero",
-        "roomType": "suite",
+        "roomType": "suite"
     },
     "source": {
         "origin": "booking.com",
@@ -62,14 +62,14 @@ content-type: application/json
 {
     "customer": {
         "name": "John Doe",
-        "email": "john.doe@example.com",
+        "email": "john.doe@example.com"
     },
     "reservation": {
         "checkin": "2022-10-12",
         "checkout": "2022-10-14",
         "numAdults": 2,
         "numChildren": 0,
-        "roomType": "suite",
+        "roomType": "suite"
     },
     "source": {
         "origin": "booking.com",
@@ -85,14 +85,14 @@ content-type: application/json
 {
     "customer": {
         "name": "John Doe",
-        "email": "test@example.com",
+        "email": "test@example.com"
     },
     "reservation": {
         "checkin": "2022-10-01",
         "checkout": "2022-10-02",
         "numAdults": "two",
         "numChildren": 0,
-        "roomType": "suite",
+        "roomType": "suite"
     },
     "source": {
         "origin": "booking.com",
@@ -110,7 +110,7 @@ content-type: application/json
 {
     "customer": {
         "name": "John Doe",
-        "email": "john.doe@example.com",
+        "email": "john.doe@example.com"
     },
     "reservation": {
         "checkin": "2022-10-12",
@@ -118,5 +118,29 @@ content-type: application/json
         "numAdults": 2,
         "numChildren": 0,
         "roomType": "suite"
+    }
+}
+
+###
+
+POST http://localhost:3000/save-reservation
+content-type: application/json
+
+{
+    "id": "018b4dd5-3d02-46ca-a327-e71250b2b9fa",
+    "customer": {
+        "name": "John Doe",
+        "email": "test@example.com"
+    },
+    "reservation": {
+        "checkin": "2022-10-01",
+        "checkout": "2022-10-02",
+        "numAdults": 2,
+        "numChildren": 0,
+        "roomType": "suite"
+    },
+    "source": {
+        "origin": "booking.com",
+        "reservationId": "abc123"
     }
 }

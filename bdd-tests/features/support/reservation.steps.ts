@@ -4,7 +4,7 @@ import { strict as assert } from "assert";
 import * as broker from "./tools/broker";
 
 type World = {
-  events: { topic: string; data: any }[];
+  events: { topic: string; body: any; header: any }[];
   // TODO : Define type
   result: any | null;
   broker: any;
@@ -21,9 +21,12 @@ BeforeAll(async () => {
 
   world.broker = await broker.connect();
 
-  world.broker.subscribe("reservation_events", (topic: string, data: any) => {
-    world.events.push({ topic, data });
-  });
+  world.broker.subscribe(
+    "reservation_events",
+    (topic: string, { header, body }: any) => {
+      world.events.push({ topic, header, body });
+    }
+  );
 });
 
 Before(async () => {
@@ -93,9 +96,61 @@ When(
   }
 );
 
+When(
+  "the reservation is updated to {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}",
+  async (
+    customerEmail,
+    customerName,
+    checkin,
+    checkout,
+    numAdults,
+    numChildren,
+    roomType,
+    specialRequests,
+    origin,
+    reservationId
+  ) => {
+    const id = world.result.data.id;
+
+    const data = {
+      id,
+      customer: {
+        ...(ignored(customerEmail) ? {} : { email: customerEmail }),
+        ...(ignored(customerName) ? {} : { name: customerName }),
+      },
+      reservation: {
+        ...(ignored(checkin) ? {} : { checkin }),
+        ...(ignored(checkout) ? {} : { checkout }),
+        ...(ignored(numAdults) ? {} : { numAdults: tryNumber(numAdults) }),
+        ...(ignored(numChildren)
+          ? {}
+          : { numChildren: tryNumber(numChildren) }),
+        ...(ignored(roomType) ? {} : { roomType }),
+        ...(ignored(specialRequests) ? {} : { specialRequests }),
+      },
+      source: {
+        ...(ignored(origin) ? {} : { origin }),
+        ...(ignored(reservationId) ? {} : { reservationId }),
+      },
+    };
+
+    console.log(`Updating reservations:`, data);
+    try {
+      const result = await axios.post(
+        "http://reservations-backend:3000/save-reservation",
+        data
+      );
+      world.result = result;
+    } catch (error: any) {
+      world.result = error.response;
+      //console.log(error.response);
+      throw error;
+    }
+  }
+);
+
 Then("the reservation should be found", async () => {
   const reservationId = world.result.data.id;
-  console.log("id:", reservationId);
 
   const requestUrl = `http://reservations-backend:3000/reservations/${reservationId}`;
 
@@ -108,10 +163,14 @@ Then("the status should be {int}", (status) => {
   assert.strictEqual(world.result.status, status);
 });
 
+Then("the status is {int}", (status) => {
+  assert.strictEqual(world.result.status, status);
+});
+
 Then("the reservation event should have been received", () => {
   const reservationId = world.result.data.id;
   const event = world.events.filter(
-    (e) => e.topic === "reservation_events" && e.data.body.id === reservationId
+    (e) => e.topic === "reservation_events" && e.body.id === reservationId
   );
 
   assert(!!event);
@@ -120,8 +179,19 @@ Then("the reservation event should have been received", () => {
 Then("the reservation request event should have been received", () => {
   const reservationId = world.result.data.id;
   const event = world.events.filter(
+    (e) => e.topic === "reservation_draft_events" && e.body.id === reservationId
+  );
+
+  assert(!!event);
+});
+
+Then("the reservation updated event should have been received", () => {
+  const reservationId = world.result.data.id;
+  const event = world.events.filter(
     (e) =>
-      e.topic === "reservation_draft_events" && e.data.body.id === reservationId
+      e.topic === "reservation_events" &&
+      e.body.id === reservationId &&
+      e.header.type === "reservation.changed"
   );
 
   assert(!!event);
@@ -129,11 +199,25 @@ Then("the reservation request event should have been received", () => {
 
 Then("the reservation request should be found", async () => {
   const reservationId = world.result.data.id;
-  console.log("id:", reservationId);
 
   const requestUrl = `http://reservations-backend:3000/reservation-drafts/${reservationId}`;
 
   const result = await axios.get(requestUrl);
 
   assert.strictEqual(result.status, 200);
+});
+
+Then("the reservation request should not be found", async () => {
+  const reservationId = world.result.data.id;
+
+  const requestUrl = `http://reservations-backend:3000/reservation-drafts/${reservationId}`;
+
+  try {
+    const result = await axios.get(requestUrl);
+    throw new Error(
+      "The reservation request was found but should not be there"
+    );
+  } catch (error: any) {
+    assert.strictEqual(error.response.status, 404);
+  }
 });
