@@ -13,14 +13,18 @@ const formatReservation = (reservation: Reservation) => ({
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Reservation>
+  res: NextApiResponse<Reservation | null>
 ) {
   console.log(req.query.id);
   const backendRes = await fetch(
     `http://reservations-backend:3000/reservation-drafts/${req.query.id}`
   );
 
-  console.log(backendRes);
+  if (backendRes.status === 404) {
+    res.status(200).json(null);
+    return;
+  }
+
   const reservation: Reservation = await backendRes.json();
   res.status(200).json(formatReservation(reservation));
 }

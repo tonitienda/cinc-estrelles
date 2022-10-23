@@ -66,15 +66,15 @@ const saveData = async (
   console.log("\n\n\n\n\n 4 ----");
   await dependencies.dbClient.executeTransaction([
     {
-      statement: `UPDATE reservations SET data = $1 WHERE id = $2;`,
+      statement: `UPDATE reservations.reservations SET data = $1 WHERE id = $2;`,
       params: [reservation, reservation.id],
     },
     {
-      statement: `DELETE FROM reservation_drafts WHERE id = $1;`,
+      statement: `DELETE FROM reservations.reservation_drafts WHERE id = $1;`,
       params: [reservation.id],
     },
     {
-      statement: `INSERT INTO reservation_events (id, reservation_id, data)
+      statement: `INSERT INTO reservations.reservation_events (id, reservation_id, data)
   VALUES ($1, $2, $3);`,
       params: [
         eventId,

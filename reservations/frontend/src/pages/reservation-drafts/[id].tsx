@@ -1,9 +1,9 @@
 import { ReservationDraft } from "../../model/reservation-draft";
 import TextField from "@mui/material/TextField";
-import { Typography, Grid } from "@mui/material";
+import { Typography, Grid, Button } from "@mui/material";
 import dynamic from "next/dynamic";
-import MonacoEditor from "react-monaco-editor";
 import { useState } from "react";
+import SaveButton from "../../components/buttons/SaveButton";
 
 const DynamicReactJson = dynamic(import("react-json-view"), { ssr: false });
 
@@ -20,11 +20,30 @@ export async function getServerSideProps(context: any) {
   return { props: { reservation } };
 }
 
+async function saveReservation(
+  reservation: ReservationDraft
+): Promise<Boolean> {
+  console.log(`Saving `, reservation);
+  const res = await fetch(`http://localhost:4000/api/save-reservation`, {
+    method: "POST",
+    body: JSON.stringify(reservation),
+    headers: {
+      contentType: "application/json",
+    },
+  });
+
+  return res.status === 200;
+}
+
 const ReservationDraftsDetail = ({
   reservation,
 }: {
-  reservation: ReservationDraft;
+  reservation: ReservationDraft | null;
 }) => {
+  if (!reservation) {
+    return <Typography variant="h6">Reservation not found</Typography>;
+  }
+
   const [reservationData, setReservation] = useState(reservation);
 
   const setCustomerData = (data: any) => {
@@ -143,6 +162,9 @@ const ReservationDraftsDetail = ({
 
       <Grid item md={6}>
         <DynamicReactJson src={reservationData} />
+      </Grid>
+      <Grid item md={12}>
+        <SaveButton onClick={() => saveReservation(reservationData)} />
       </Grid>
     </Grid>
   );
