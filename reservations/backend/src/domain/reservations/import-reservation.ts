@@ -116,7 +116,7 @@ const saveData = async (
       ],
     },
     {
-      statement: `NOTIFY ${eventsTable}, '${eventId}'`,
+      statement: `NOTIFY ${eventsTable}, '${eventId}';`,
       params: [],
     },
   ]);
